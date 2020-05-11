@@ -1,6 +1,6 @@
 package component;
 
-public class Component {
+public abstract class Component {
 	private String name;
 	private double price;
 	private String brand;
