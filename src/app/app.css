@@ -1,1 +1,15 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.bg1 {
+	-fx-background: linear-gradient(#1f1068 0%, #130b3d 100%);
+}
+
+
+.std-textfield {
+    -fx-background-color: -fx-text-box-border, -fx-background ;
+    -fx-background-insets: 0, 0 0 1 0 ;
+    -fx-background-radius: 0 ;
+}
+
+.std-textfield:focused {
+    -fx-background-color: -fx-focus-color, -fx-background ;
+}
