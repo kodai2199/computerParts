@@ -7,10 +7,11 @@ public class Graphic_Cards extends Component {
 	private int memory_frequency;
 	private int length;
 	private int wattage;
-	private String multi_GPU;
+	private String multi_GPU;				//SLI or other
+	private String type;					//GTX 1080, etc...
 	
 	public Graphic_Cards(String name, double price, String brand, String lighting, int vram, int core_frequency,
-			int memory_frequency, int length, int wattage, String multi_GPU) {
+			int memory_frequency, int length, int wattage, String multi_GPU,String type) {
 		super(name, price, brand);
 		this.lighting = lighting;
 		this.vram = vram;
@@ -19,6 +20,7 @@ public class Graphic_Cards extends Component {
 		this.length = length;
 		this.wattage = wattage;
 		this.multi_GPU = multi_GPU;
+		this.type=type;
 	}
 
 	public String getLighting() {
@@ -47,6 +49,10 @@ public class Graphic_Cards extends Component {
 
 	public String getMulti_GPU() {
 		return multi_GPU;
+	}
+
+	public String getType() {
+		return type;
 	}
 
 }

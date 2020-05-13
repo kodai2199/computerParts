@@ -9,9 +9,10 @@ public class Motherboards extends Component {
 	private String size;
 	private int ram_speed;
 	private String multi_GPU;
+	private int max_memory;
 	
 	public Motherboards(String name, double price, String brand, String lighting, String chipset, String socket, String ram_type, int ram_slots, String size,
-			int ram_speed, String multi_GPU) {
+			int ram_speed, String multi_GPU,int max_memory) {
 		super(name,price,brand);
 		this.lighting = lighting;
 		this.chipset = chipset;
@@ -21,6 +22,7 @@ public class Motherboards extends Component {
 		this.size = size;
 		this.ram_speed = ram_speed;
 		this.multi_GPU = multi_GPU;
+		this.max_memory=max_memory;
 	}
 	
 	public String getLighting() {
@@ -47,6 +49,9 @@ public class Motherboards extends Component {
 	public String getMulti_GPU() {
 		return multi_GPU;
 	}
-	
+
+	public int getMax_memory() {
+		return max_memory;
+	}
 	
 }

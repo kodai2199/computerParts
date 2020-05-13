@@ -3,8 +3,8 @@ package component;
 public class Power_supplies extends Component {
 	private int wattage;
 	private int length;
-	private String type;
-	private String size;
+	private String type;		//Modular or other
+	private String size;		//ATX or other
 	
 	public Power_supplies(String name, double price, String brand, int wattage, int length, String type, String size) {
 		super(name, price, brand);
