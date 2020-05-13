@@ -11,7 +11,6 @@ public class Computer {
 	private int npsu;
 	private int ncool;
 	private int ncase;
-	private int nstorage;
 	
 	public Computer(String name) {
 		computer=new ArrayList<Component>();
@@ -24,7 +23,6 @@ public class Computer {
 		this.nmotherboard=0;
 		this.npsu=0;
 		this.ncase=0;
-		this.nstorage=0;
 	}
 	
 	public boolean addComponent(Component c) {
@@ -136,14 +134,11 @@ public class Computer {
 			}
 		}
 		else if(tmp.getSimpleName().equalsIgnoreCase("Storage")) {
-			nstorage+=1;
 			Storage st=(Storage)c;
 			if(checkStorage(st))
 				return true;
-			else {
-				nstorage-=1;
+			else 
 				return false;
-			}
 		}
 		return true;
 	}
