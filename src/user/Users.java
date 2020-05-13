@@ -1,17 +1,43 @@
 package user;
 import java.io.*;
 import java.util.*;
+import java.security.*;
+import java.nio.charset.StandardCharsets;
 public class Users {
 	private String username;
 	private String password;
 	private ArrayList<Computer> build;
+	private String salt;
 	
 	public Users(String username, String password) {
 		this.username=username;
-		this.password=password;
 		this.build=new ArrayList<Computer>();
+		Random r=new Random();
+		this.salt="";
+		for(int i=0;i<32;++i) {
+			char tmp=(char)('!'+r.nextInt(93));
+			this.salt+=tmp;
+		}
+		this.password=hash(password,this.salt);
 	}
-
+	
+	private String hash(String passwordToHash, String salt) {
+		String generatedPassword = null;
+	    try {
+	        MessageDigest md = MessageDigest.getInstance("SHA-512");
+	        md.update(salt.getBytes(StandardCharsets.UTF_8));
+	        byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+	        StringBuilder sb = new StringBuilder();
+	        for(int i=0; i< bytes.length ;i++){
+	            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+	        }
+	        generatedPassword = sb.toString();
+	    } catch (NoSuchAlgorithmException e) {
+	        e.printStackTrace();
+	    }
+	    return generatedPassword;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -58,7 +84,6 @@ public class Users {
 				throw(new IOException());
 		}
 	}
-	
 	
 	public void changePassword(String newPassword) {
 		this.password=newPassword;
