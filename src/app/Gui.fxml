@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="451.0" prefWidth="701.0" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.GuiController">
    <center>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="234.0" prefWidth="251.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="234.0" prefWidth="251.0" spacing="20.0" BorderPane.alignment="CENTER">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
          <children>
-            <TextField promptText="Username" styleClass="std-textfield" stylesheets="@app.css" />
-            <PasswordField promptText="Password" styleClass="std-textfield" stylesheets="@app.css" />
+            <Label styleClass="std-large-label" stylesheets="@app.css" text="Username" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField styleClass="std-textfield" stylesheets="@app.css" />
+            <Label styleClass="std-large-label" stylesheets="@app.css" text="Password" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <PasswordField styleClass="std-textfield" stylesheets="@app.css" />
          </children></VBox>
    </center>
 </BorderPane>
