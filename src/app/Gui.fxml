@@ -21,14 +21,14 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField styleClass="std-textfield" stylesheets="@app.css" />
+            <TextField fx:id="user" styleClass="std-textfield" stylesheets="@app.css" />
             <Label styleClass="std-label-for-textfield" stylesheets="@app.css" text="Password" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <PasswordField styleClass="std-textfield" stylesheets="@app.css" />
-            <Button mnemonicParsing="false" styleClass="std-button" stylesheets="@app.css" text="Login" />
+            <PasswordField fx:id="pwd" styleClass="std-textfield" stylesheets="@app.css" />
+            <Button mnemonicParsing="false" onMouseClicked="#login" styleClass="std-button" stylesheets="@app.css" text="Login" />
          </children></VBox>
    </center>
 </BorderPane>

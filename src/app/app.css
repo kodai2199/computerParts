@@ -35,6 +35,5 @@
 }
 
 .std-button:hover {
-	-fx-duration: 2s;
 	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 1, 3);
 }
