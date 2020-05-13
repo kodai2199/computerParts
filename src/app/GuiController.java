@@ -2,10 +2,20 @@ package app;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class GuiController {
+	
+	private Stage stage;
+	
+	@FXML
+	private BorderPane login_container;
 	
 	@FXML
 	private TextField user;
@@ -19,8 +29,20 @@ public class GuiController {
 	
 	@FXML
 	public void login() {
-		String user = this.user.getText();
-		String pwd = this.pwd.getText();
-		System.out.println("Fa schifo, lo so, ma "+user+" ha provato a fare il login con la password "+pwd);
+		try {
+			String user = this.user.getText();
+			String pwd = this.pwd.getText();
+			if (pwd.equals("pentagono")) {
+				stage = (Stage)login_container.getScene().getWindow();
+				VBox root = (VBox)FXMLLoader.load(getClass().getResource("Home.fxml"));
+				Scene scene = new Scene(root);
+				scene.getStylesheets().add(getClass().getResource("app.css").toExternalForm());
+				stage.setScene(scene);
+				System.out.println("Login effettuato.");
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

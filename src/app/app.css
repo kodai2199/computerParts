@@ -37,3 +37,7 @@
 .std-button:hover {
 	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 1, 3);
 }
+
+.bg2{
+	-fx-background-color: #23272A;
+}
