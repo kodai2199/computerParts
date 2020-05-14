@@ -11,7 +11,7 @@ public class User {
 	private String secretQuestion;
 	private String secretAnswer;
 	
-	public User(String username, String password, String secretQuestion, String secretAnswer) {
+	public User(String username, String password, String secretQuestion, String secretAnswer) {						//Generate a new User.
 		this.username=username;
 		this.build=new ArrayList<Computer>();
 		Random r=new Random();
@@ -26,7 +26,7 @@ public class User {
 		this.secretAnswer=hash(tmp, salt);		
 	}
 	
-	private String hash(String passwordToHash, String salt) {
+	private String hash(String passwordToHash, String salt) {														//Hash code for the password cryptography.
 		String generatedPassword = null;
 	    try {
 	        MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -43,11 +43,11 @@ public class User {
 	    return generatedPassword;
 	}
 	
-	public String getUsername() {
+	public String getUsername() {																					//Getter method for the username.
 		return username;
 	}
 	
-	public void addComputer(String cname) throws IOException {
+	public void addComputer(String cname) throws IOException {														//Add method for Computer. Throws IOException.
 		if(checkComputer(cname)==null) {
 			Computer c=new Computer(cname);
 			build.add(c);
@@ -56,7 +56,7 @@ public class User {
 			throw (new IOException());
 	}
 	
-	public Computer getComputer(String cname) throws FileNotFoundException {
+	public Computer getComputer(String cname) throws FileNotFoundException {										//Getter method for Computer. Check if the computer exists by the name and return the computer himself. If the computer doesn't exist, throws FileNotFoundException.
 		Computer c=checkComputer(cname);
 		if(c==null)
 			throw (new FileNotFoundException());
@@ -64,7 +64,7 @@ public class User {
 			return c;
 	}
 	
-	private Computer checkComputer(String cname) {
+	private Computer checkComputer(String cname) {																	//Check method. If the computer exists return true, else return false.
 		for(Computer c: build) {
 			if(c.getName().equals(cname)) {
 				return c;
@@ -73,7 +73,7 @@ public class User {
 		return null;
 	}
 	
-	public void changeComputerName(String currentName, String newName)throws IOException, FileNotFoundException {
+	public void changeComputerName(String currentName, String newName)throws IOException, FileNotFoundException {	//Change the name of a specific computer. If the check method return true, check if exists another computer with the new name. Throws FileNotFoundException if the file doesn't exist, throws IOException if exists another computer with the same name.
 		if(currentName.equals(newName))
 			return;
 		Computer c=checkComputer(currentName);
@@ -90,14 +90,14 @@ public class User {
 		}
 	}
 	
-	public boolean checkPassword(String password) throws SecurityException {
+	public boolean checkPassword(String password) throws SecurityException {										//Check if the insert password is correct. If it is wrong, throws SecurityException.
 		if(hash(password,this.salt).equals(this.password)) 
 			return true;
 		else
 			throw (new SecurityException());
 	}
 	
-	public boolean changePassword(String answer, String newPassword) throws SecurityException {
+	public boolean changePassword(String answer, String newPassword) throws SecurityException {						//Change the password only if the answer is correct.						
 		if(hash(answer.toUpperCase(),this.salt).equals(secretAnswer)) {
 			this.password=hash(newPassword,this.salt);
 			return true;
@@ -106,11 +106,11 @@ public class User {
 			throw (new SecurityException());
 	}
 	
-	public String getQuestion() {
+	public String getQuestion() {																					//Getter method for secretQuestion.
 		return this.secretQuestion;
 	}
 	
-	public void changeUsername(String newUsername) {
+	public void changeUsername(String newUsername) {																//Change the username of the user.
 		this.username=newUsername;
 	}
 }

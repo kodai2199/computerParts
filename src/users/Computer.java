@@ -133,7 +133,7 @@ public class Computer {
 				return false;
 			}
 		}
-		else if(tmp.getSimpleName().equalsIgnoreCase("Storage")) {
+		else if(tmp.getSimpleName().equalsIgnoreCase("Storage")) {					//Check if the component is a storage
 			Storage st=(Storage)c;
 			if(checkStorage(st))
 				return true;
@@ -143,7 +143,7 @@ public class Computer {
 		return true;
 	}
 	
-	private boolean checkMotherboards(Motherboards m) {
+	private boolean checkMotherboards(Motherboards m) {								//Check the motherboard compatibility with the others component. Return true if the motherboard can be added, else return false.
 		for (Component t:computer) {
 			Class<? extends Component> tmp = t.getClass();
 			if(tmp.getSimpleName().equalsIgnoreCase("CPU")) {					
@@ -192,7 +192,7 @@ public class Computer {
 		return true;
 	}
 	
-	private boolean checkCPU(CPU c) {
+	private boolean checkCPU(CPU c) {												//Check the CPU compatibility with the others component. Return true if the CPU can be added, else return false.
 		for (Component t:computer) {
 			Class<? extends Component> tmp = t.getClass();
 			if(tmp.getSimpleName().equalsIgnoreCase("Motherboards")) {
@@ -214,7 +214,7 @@ public class Computer {
 		return true;
 	}
 	
-	private boolean checkMemory(Memory ram) {
+	private boolean checkMemory(Memory ram) {										//Check the RAM compatibility with the others component. Return true if the RAM can be added, else return false.
 		for (Component t:computer) {
 			Class<? extends Component> tmp = t.getClass();
 			if(tmp.getSimpleName().equalsIgnoreCase("Motherboards")) {
@@ -248,7 +248,7 @@ public class Computer {
 		return true;
 	}
 	
-	private boolean checkCooler(CPU_Cooling cc) {
+	private boolean checkCooler(CPU_Cooling cc) {									//Check the CPU cooler compatibility with the others component. Return true if the CPU cooler can be added, else return false.
 		for (Component t:computer) {
 			Class<? extends Component> tmp=t.getClass();
 			if(tmp.getSimpleName().equalsIgnoreCase("CPU")) {
@@ -270,7 +270,7 @@ public class Computer {
 		return true;
 	}
 	
-	private boolean checkCases(Cases cs) {
+	private boolean checkCases(Cases cs) {											//Check the Case compatibility with the others component. Return true if the case can be added, else return false.
 		for(Component t:computer) {
 			Class<? extends Component> tmp=t.getClass();
 			if(tmp.getSimpleName().equalsIgnoreCase("Motherboards")) {
@@ -299,7 +299,7 @@ public class Computer {
 		return true;
 	}
 
-	private boolean checkGPU(Graphic_Cards gpu) {
+	private boolean checkGPU(Graphic_Cards gpu) {									//Check the GPU compatibility with the others component. Return true if the GPU can be added, else return false.
 		for(Component t:computer) {
 			Class<? extends Component> tmp = t.getClass();
 			if(tmp.getSimpleName().equalsIgnoreCase("Cases")) {
@@ -325,7 +325,7 @@ public class Computer {
 		return true;
 	}
 	
-	private boolean checkPSU(Power_supplies psu) {
+	private boolean checkPSU(Power_supplies psu) {									//Check the PSU compatibility with the others component. Return true if the PSU can be added, else return false.
 		for(Component t:computer) {
 			Class<?extends Component> tmp=t.getClass();
 			if(tmp.getSimpleName().equalsIgnoreCase("Cases")) {
@@ -341,7 +341,7 @@ public class Computer {
 		return true;
 	}
 	
-	private boolean checkStorage(Storage st) {
+	private boolean checkStorage(Storage st) {										//Check if the M.2 storage can be insert in the motherboard. Return true if the M.2 storage can be added, else return false.
 		for(Component c:computer) {
 			if(c.getClass().getSimpleName().equalsIgnoreCase("Motherboards")) {
 				if(st.getType().equalsIgnoreCase("M.2")) {
@@ -354,7 +354,7 @@ public class Computer {
 		return true;
 	}
 	
-	private int getM_2() {
+	private int getM_2() {															//Get the number of the M.2 storage.
 		int m2=0;
 		for(Component c:computer) {
 			if(c.getClass().getSimpleName().equalsIgnoreCase("Storage")) {
@@ -366,7 +366,7 @@ public class Computer {
 		return m2;
 	}
 	
-	public int getWattage() {
+	public int getWattage() {														//Get the total wattage of the system.
 		int totw=0;
 		for(Component i:computer) {
 			if(i.getClass().getSimpleName().equalsIgnoreCase("CPU")) {
@@ -381,7 +381,7 @@ public class Computer {
 		return totw;
 	}
 	
-	public int getStorage() {
+	public int getStorage() {														//Get the total storage of the system.
 		int st=0;
 		for(Component c:computer) {
 			if(c.getClass().getSimpleName().equalsIgnoreCase("Storage")) {
@@ -392,7 +392,7 @@ public class Computer {
 		return st;
 	}
 	
-	public int getMemory() {
+	public int getMemory() {														//Get the total memory of the system.
 		int m=0;
 		for(Component c:computer) {
 			if(c.getClass().getSimpleName().equalsIgnoreCase("Memory")) {
@@ -403,15 +403,15 @@ public class Computer {
 		return m;
 	}
 	
- 	public String getName() {
+ 	public String getName() {														//Get the computer's name.
 		return this.name;
 	}
 	
-	public void rename(String name) {
+	public void rename(String name) {												//Change the computer's name.
 		this.name=name;
 	}
 	
-	public double getTotalPrice() {
+	public double getTotalPrice() {													//Get the total price.
 		double tot=0;
 		for(Component i:computer) {
 			tot+=i.getPrice();
