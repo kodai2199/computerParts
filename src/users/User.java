@@ -106,6 +106,10 @@ public class User {
 			throw (new SecurityException());
 	}
 	
+	public String getQuestion() {
+		return this.secretQuestion;
+	}
+	
 	public void changeUsername(String newUsername) {
 		this.username=newUsername;
 	}
