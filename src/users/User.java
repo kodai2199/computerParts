@@ -22,8 +22,7 @@ public class User {
 		}
 		this.password=hash(password,this.salt);
 		this.secretQuestion=secretQuestion;
-		String tmp=secretAnswer;
-		tmp.toUpperCase();
+		String tmp=secretAnswer.toUpperCase();
 		this.secretAnswer=hash(tmp, salt);		
 	}
 	
