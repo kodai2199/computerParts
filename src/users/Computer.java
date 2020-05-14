@@ -1,4 +1,4 @@
-package user;
+package users;
 import component.*;
 import java.util.*;
 public class Computer {

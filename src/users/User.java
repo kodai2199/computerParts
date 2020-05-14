@@ -1,15 +1,17 @@
-package user;
+package users;
 import java.io.*;
 import java.util.*;
 import java.security.*;
 import java.nio.charset.StandardCharsets;
-public class Users {
+public class User {
 	private String username;
 	private String password;
 	private ArrayList<Computer> build;
 	private String salt;
+	private String secretQuestion;
+	private String secretAnswer;
 	
-	public Users(String username, String password) {
+	public User(String username, String password, String secretQuestion, String secretAnswer) {
 		this.username=username;
 		this.build=new ArrayList<Computer>();
 		Random r=new Random();
@@ -19,6 +21,10 @@ public class Users {
 			this.salt+=tmp;
 		}
 		this.password=hash(password,this.salt);
+		this.secretQuestion=secretQuestion;
+		String tmp=secretAnswer;
+		tmp.toUpperCase();
+		this.secretAnswer=hash(tmp, salt);		
 	}
 	
 	private String hash(String passwordToHash, String salt) {
@@ -85,8 +91,20 @@ public class Users {
 		}
 	}
 	
-	public void changePassword(String newPassword) {
-		this.password=newPassword;
+	public boolean checkPassword(String password) throws SecurityException {
+		if(hash(password,this.salt).equals(this.password)) 
+			return true;
+		else
+			throw (new SecurityException());
+	}
+	
+	public boolean changePassword(String answer, String newPassword) throws SecurityException {
+		if(hash(answer.toUpperCase(),this.salt).equals(secretAnswer)) {
+			this.password=hash(newPassword,this.salt);
+			return true;
+		}
+		else
+			throw (new SecurityException());
 	}
 	
 	public void changeUsername(String newUsername) {
