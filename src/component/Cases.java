@@ -1,14 +1,17 @@
 package component;
 
+import java.util.HashSet;
+
 public class Cases extends Component {
 	private String size;
-	private String motherboards;
+	// Set of all motherboards sizes compatible with this case
+	private HashSet<String> motherboards;
 	private String psu_size;
 	private int max_psu_length;
 	private int max_gpu_length;
 	private int max_cpu_fan_height;
 	
-	public Cases(String name, double price, String brand, String size, String motherboards, String psu_size,
+	public Cases(String name, double price, String brand, String size, HashSet<String> motherboards, String psu_size,
 			int max_psu_length, int max_gpu_length, int max_cpu_fan_height) {
 		super(name, price, brand);
 		this.size = size;
@@ -23,7 +26,7 @@ public class Cases extends Component {
 		return size;
 	}
 
-	public String getMotherboards() {
+	public HashSet<String> getMotherboards() {
 		return motherboards;
 	}
 

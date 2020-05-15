@@ -164,8 +164,12 @@ public class Computer {
 			}
 			else if(tmp.getSimpleName().equalsIgnoreCase("Cases")) {					
 				Cases cases = (Cases)t;
-				if(!cases.getMotherboards().contains(m.getSize()))
-					return false;
+				for (String size:cases.getMotherboards()) {
+					if (size.equals(m.getSize())) {
+						return true;
+					}
+				}
+				return false;
 			}
 			else if(tmp.getSimpleName().equalsIgnoreCase("CPU_Cooling")) {			
 				CPU_Cooling cool=(CPU_Cooling)t;

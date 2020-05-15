@@ -41,3 +41,7 @@
 .bg2{
 	-fx-background-color: #23272A;
 }
+
+.top-bar{
+	-fx-min-height: 100px;
+}
