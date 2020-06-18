@@ -28,8 +28,8 @@ public class Connect {
 		}
 	}
 	
-	public ArrayList<Component> loadCPUs() {
-		ArrayList<Component> list=new ArrayList<Component>();
+	public ArrayList<CPU> loadCPUs() {
+		ArrayList<CPU> list=new ArrayList<CPU>();
 		try {
 			Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String query1="SELECT * FROM CPU";
@@ -58,8 +58,8 @@ public class Connect {
 		return list;
 	}
 	
-	public ArrayList<Component> loadMotherBoards(){
-		ArrayList<Component> list=new ArrayList<Component>();
+	public ArrayList<Motherboards> loadMotherBoards(){
+		ArrayList<Motherboards> list=new ArrayList<Motherboards>();
 		try {
 			Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String query1="SELECT * FROM Motherboard";
@@ -94,8 +94,8 @@ public class Connect {
 		return list;
 	}
 	
-	public ArrayList<Component>	loadRAMs(){
-		ArrayList<Component> list=new ArrayList<Component>();
+	public ArrayList<Memory> loadRAMs(){
+		ArrayList<Memory> list=new ArrayList<Memory>();
 		try {
 			Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String query1="SELECT * FROM Memory";
@@ -124,8 +124,8 @@ public class Connect {
 		return list;
 	}
 	
-	public ArrayList<Component> loadPowerSupplies(){
-		ArrayList<Component> list=new ArrayList<Component>();
+	public ArrayList<Power_supplies> loadPowerSupplies(){
+		ArrayList<Power_supplies> list=new ArrayList<Power_supplies>();
 		try {
 			Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String query1="SELECT * FROM Power_supply";
@@ -154,8 +154,8 @@ public class Connect {
 		return list;
 	}
 	
-	public ArrayList<Component> loadGPUs(){
-		ArrayList<Component> list=new ArrayList<Component>();
+	public ArrayList<Graphic_Cards> loadGPUs(){
+		ArrayList<Graphic_Cards> list=new ArrayList<Graphic_Cards>();
 		try {
 			Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String query1="SELECT * FROM Graphics_card";
@@ -188,8 +188,8 @@ public class Connect {
 		return list;
 	}
 	
-	public ArrayList<Component> loadCases(){
-		ArrayList<Component> list=new ArrayList<Component>();
+	public ArrayList<Cases> loadCases(){
+		ArrayList<Cases> list=new ArrayList<Cases>();
 		try {
 			Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String query1="SELECT * FROM Case";
@@ -222,8 +222,8 @@ public class Connect {
 		return list;
 	}
 	
-	public ArrayList<Component> loadStorages(){
-		ArrayList<Component> list=new ArrayList<Component>();
+	public ArrayList<Storage> loadStorages(){
+		ArrayList<Storage> list=new ArrayList<Storage>();
 		try {
 			Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String query1="SELECT * FROM Storage";
@@ -231,8 +231,9 @@ public class Connect {
 			while (rs.next()) {
 				Storage st;
 				String type=rs.getString(2);
-				int size=rs.getInt(3);
-				int ts=rs.getInt(4);
+				BigDecimal format=rs.getBigDecimal(3);
+				int size=rs.getInt(4);
+				int ts=rs.getInt(5);
 				int i=rs.getInt(1);
 				String query2="SELECT * FROM Component WHERE IdComponent = '"+i+"'";
 				ResultSet rs2=statement1.executeQuery(query2);
@@ -240,7 +241,7 @@ public class Connect {
 				String name=rs2.getString(2);
 				BigDecimal n=rs2.getBigDecimal(3);
 				String brand=rs2.getString(4);
-				st=new Storage(name, n.doubleValue(), brand, type, size, ts);
+				st=new Storage(name, n.doubleValue(), brand, type, format.doubleValue(), size, ts);
 				list.add(st);
 			}
 			statement1.close();
@@ -250,9 +251,9 @@ public class Connect {
 		}
 		return list;
 	}
-
-	public ArrayList<Component> loadCPU_coolers(){
-		ArrayList<Component> list=new ArrayList<Component>();
+	
+	public ArrayList<CPU_Cooling> loadCPU_coolers(){
+		ArrayList<CPU_Cooling> list=new ArrayList<CPU_Cooling>();
 		try {
 			Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			String query1="SELECT * FROM CPU_cooling";
