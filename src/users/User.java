@@ -5,6 +5,7 @@ import java.util.*;
 import db.Connect;
 
 import java.security.*;
+import java.sql.SQLException;
 import java.nio.charset.StandardCharsets;
 public class User {
 	private String username;
@@ -25,18 +26,24 @@ public class User {
 		// 4. Check if a user with that hashed password and username exists
 		// Login complete
 		
-		Connect db = new Connect();
-		String salt = db.getSalt(username);
-		this.password = this.hash(password, salt);
-		if (!db.hasUser(username, this.password) || salt == "Salt not found") {
-			throw new SecurityException();
+		try {
+			Connect db = new Connect();
+			String salt = db.getSalt(username);
+			this.password = hash(password, salt);
+			if (!db.hasUser(username, this.password) || salt.equals("Salt not found")) {
+				throw(new SecurityException());
+			}
+			this.loggedin = true;
+			this.salt = salt;
+			this.build=new ArrayList<Computer>();
 		}
-		this.loggedin = true;
-		this.build=new ArrayList<Computer>();
-	}
-	
-	public User() {						
-		
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void create(String username, String password, String secretQuestion, String secretAnswer) {
@@ -46,9 +53,17 @@ public class User {
 		String tmp = secretAnswer.toUpperCase();
 		secretAnswer = hash(tmp, salt);
 		
-		// Try to insert into the database
-		Connect db = new Connect();
-		db.insertUser(username, password, secretQuestion, secretAnswer);
+		try {
+			// 	Try to insert into the database
+			Connect db = new Connect();
+			db.insertUser(username, password, salt, secretQuestion, secretAnswer);
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		} 
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private static String hash(String passwordToHash, String salt) {														//Hash code for the password cryptography.

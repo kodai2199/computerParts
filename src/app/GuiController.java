@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import users.User;
 
 public class GuiController {
 	
@@ -37,19 +38,20 @@ public class GuiController {
 	
 	@FXML
 	public void login() {
-		
-		
 		try {
 			String user = this.user.getText();
 			String pwd = this.pwd.getText();
-			if (pwd.equals("pentagono")) {
-				stage = (Stage)login_container.getScene().getWindow();
-				VBox root = (VBox)FXMLLoader.load(getClass().getResource("Home.fxml"));
-				Scene scene = new Scene(root);
-				scene.getStylesheets().add(getClass().getResource("app.css").toExternalForm());
-				stage.setScene(scene);
-				System.out.println("Login effettuato.");
-			}
+			User u = new User(user, pwd);
+			stage = (Stage)login_container.getScene().getWindow();
+			VBox root = (VBox)FXMLLoader.load(getClass().getResource("Home.fxml"));
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("app.css").toExternalForm());
+			stage.setScene(scene);
+			System.out.println("Login effettuato.");
+		}
+		catch (SecurityException e){
+			System.out.println("Wrong password or username does not exists.");
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
