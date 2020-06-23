@@ -57,6 +57,7 @@ public class User {
 			// 	Try to insert into the database
 			Connect db = new Connect();
 			db.insertUser(username, password, salt, secretQuestion, secretAnswer);
+		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
