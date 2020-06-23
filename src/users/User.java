@@ -1,32 +1,54 @@
 package users;
 import java.io.*;
 import java.util.*;
+
+import db.Connect;
+
 import java.security.*;
 import java.nio.charset.StandardCharsets;
 public class User {
 	private String username;
 	private String password;
+	private Boolean loggedin = false;
 	private ArrayList<Computer> build;
 	private String salt;
 	private String secretQuestion;
 	private String secretAnswer;
 	
-	public User(String username, String password, String secretQuestion, String secretAnswer) {						//Generate a new User.
-		this.username=username;
-		this.build=new ArrayList<Computer>();
-		Random r=new Random();
-		this.salt="";
-		for(int i=0;i<32;++i) {
-			char tmp=(char)('!'+r.nextInt(93));
-			this.salt+=tmp;
+	public User(String username, String password) throws SecurityException {
+		this.username = username;
+		
+		// Login
+		// 1. Establish a connection with the DB
+		// 2. Get the salt for this username (if it exists)
+		// 3. Hash the password with the given salt
+		// 4. Check if a user with that hashed password and username exists
+		// Login complete
+		
+		Connect db = new Connect();
+		String salt = db.getSalt(username);
+		this.password = this.hash(password, salt);
+		if (!db.hasUser(username, this.password) || salt == "Salt not found") {
+			throw new SecurityException();
 		}
-		this.password=hash(password,this.salt);
-		this.secretQuestion=secretQuestion;
-		String tmp=secretAnswer.toUpperCase();
-		this.secretAnswer=hash(tmp, salt);		
+		this.loggedin = true;
+		this.build=new ArrayList<Computer>();
 	}
 	
-	private String hash(String passwordToHash, String salt) {														//Hash code for the password cryptography.
+	public User() {						
+		
+	}
+	
+	public static void create(String username, String password, String secretQuestion, String secretAnswer) {
+		//Generate a new User.
+		String salt = generateSalt();
+		password = hash(password, salt);
+		secretQuestion = secretQuestion;
+		String tmp = secretAnswer.toUpperCase();
+		secretAnswer = hash(tmp, salt);		
+	}
+	
+	private static String hash(String passwordToHash, String salt) {														//Hash code for the password cryptography.
 		String generatedPassword = null;
 	    try {
 	        MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -41,6 +63,16 @@ public class User {
 	        e.printStackTrace();
 	    }
 	    return generatedPassword;
+	}
+	
+	private static String generateSalt() {
+		String salt = "";
+		Random r=new Random();
+		for(int i=0;i<32;++i) {
+			char tmp=(char)('!'+r.nextInt(93));
+			salt+=tmp;
+		}
+		return salt;
 	}
 	
 	public String getUsername() {																					//Getter method for the username.
@@ -112,5 +144,9 @@ public class User {
 	
 	public void changeUsername(String newUsername) {																//Change the username of the user.
 		this.username=newUsername;
+	}
+	
+	public boolean isLoggedin() {
+		return this.loggedin;
 	}
 }

@@ -1,0 +1,117 @@
+CREATE TABLE IF NOT EXISTS Brand(
+    Name VARCHAR(100) PRIMARY KEY,
+    Logo VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS `User`(
+    Username VARCHAR(100) PRIMARY KEY,
+    Password VARCHAR(100) NOT NULL,
+    Salt VARCHAR(100) NOT NULL,
+    Privileges INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS Component(
+    IdComponent INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(200) NOT NULL,
+    Price DECIMAL(8, 2) NOT NULL,
+    BrandName VARCHAR(100),
+    FOREIGN KEY (BrandName) REFERENCES Brand(Name)
+);
+
+CREATE TABLE IF NOT EXISTS Case_fan(
+    IdComponent INT PRIMARY KEY,
+    Lighting VARCHAR(100),
+    Type VARCHAR(100),
+    Airflow VARCHAR(100),
+    Size VARCHAR(100),
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
+);
+
+CREATE TABLE IF NOT EXISTS `Case`(
+    IdComponent INT PRIMARY KEY,
+    Size VARCHAR(100),
+    PsuSize VARCHAR(100),
+    MaxPsuLength INT,
+    MaxGpuLength INT,
+    MaxCpuFanHeight INT,
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
+);
+
+CREATE TABLE IF NOT EXISTS Case_supports_ff(
+    IdComponent INT,
+    FormFactor VARCHAR(100),
+    PRIMARY KEY (IdComponent, FormFactor),
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
+);
+
+CREATE TABLE IF NOT EXISTS CPU_cooling(
+    IdComponent INT PRIMARY KEY,
+    Lighting VARCHAR(100),
+    Type VARCHAR(100),
+    Airflow INT,
+    Socket VARCHAR(100),
+    Height INT,
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
+);
+
+CREATE TABLE IF NOT EXISTS CPU(
+    IdComponent INT PRIMARY KEY,
+    Frequency DECIMAL (4, 2),
+    Cores INT,
+    Socket VARCHAR(100),
+    Wattage INT,
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
+);
+
+CREATE TABLE IF NOT EXISTS Graphics_card(
+    IdComponent INT PRIMARY KEY,
+    Lighting VARCHAR(100),
+    VRAM INT,
+    CoreFrequency INT,
+    MemoryFrequency INT,
+    Length INT,
+    Wattage INT,
+    MultiGPU VARCHAR(100),
+    Type VARCHAR(100),
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
+);
+
+
+CREATE TABLE IF NOT EXISTS Memory(
+    IdComponent INT PRIMARY KEY,
+    Size INT,
+    Type VARCHAR(100),
+    Frequency INT,
+    Lighting VARCHAR(100),
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
+);
+
+CREATE TABLE IF NOT EXISTS Motherboard(
+    IdComponent INT PRIMARY KEY,
+    Lighting VARCHAR(100),
+    Chipset VARCHAR(100),
+    Socket VARCHAR(100),
+    RamType VARCHAR(100),
+    RamSlots INT,
+    Size VARCHAR(100),
+    RamSpeed INT,
+    MultiGPU VARCHAR(100),
+    MaxMemory INT,
+    MaxM2 INT,
+    FOREIGN KEY (IdComponent) REFERENCES Component
+);
+
+CREATE TABLE IF NOT EXISTS Power_supply(
+    IdComponent INT PRIMARY KEY,
+    Wattage INT,
+    Length INT,
+    Type VARCHAR(100),
+    Size VARCHAR(100),
+    FOREIGN KEY (IdComponent) REFERENCES Component
+);
+
+CREATE TABLE IF NOT EXISTS Storage(
+    IdComponent INT PRIMARY KEY,
+    FOREIGN KEY (IdComponent) REFERENCES Component
+);
+
