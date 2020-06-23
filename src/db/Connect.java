@@ -74,7 +74,7 @@ public class Connect {
 		return list;
 	}
 	
-	public ArrayList<Memory> loadRAMs()throws SQLException {
+	public ArrayList<Memory> loadRAMs() throws SQLException {
 		ArrayList<Memory> list=new ArrayList<Memory>();
 		Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		String query1="SELECT * FROM Memory";
