@@ -22,9 +22,9 @@
          <children>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="100.0" stylesheets="@app.css" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.vgrow="ALWAYS">
                <children>
-                  <Button mnemonicParsing="false" text="Button" />
-                  <Button mnemonicParsing="false" text="Button" />
-                  <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" styleClass="std-button" text="Saved Builds" />
+                  <Button mnemonicParsing="false" styleClass="std-button" text="New Build" />
+                  <Button mnemonicParsing="false" styleClass="std-button" stylesheets="@app.css" text="Your profile" />
                </children>
                <padding>
                   <Insets right="50.0" />

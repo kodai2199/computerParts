@@ -43,9 +43,12 @@ public class User {
 		//Generate a new User.
 		String salt = generateSalt();
 		password = hash(password, salt);
-		secretQuestion = secretQuestion;
 		String tmp = secretAnswer.toUpperCase();
-		secretAnswer = hash(tmp, salt);		
+		secretAnswer = hash(tmp, salt);
+		
+		// Try to insert into the database
+		Connect db = new Connect();
+		db.insertUser(username, password, secretQuestion, secretAnswer);
 	}
 	
 	private static String hash(String passwordToHash, String salt) {														//Hash code for the password cryptography.

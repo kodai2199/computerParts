@@ -1,3 +1,5 @@
+=== TABLE CREATION ===
+
 CREATE TABLE IF NOT EXISTS Brand(
     Name VARCHAR(100) PRIMARY KEY,
     Logo VARCHAR(255)
@@ -98,7 +100,7 @@ CREATE TABLE IF NOT EXISTS Motherboard(
     MultiGPU VARCHAR(100),
     MaxMemory INT,
     MaxM2 INT,
-    FOREIGN KEY (IdComponent) REFERENCES Component
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
 );
 
 CREATE TABLE IF NOT EXISTS Power_supply(
@@ -107,11 +109,30 @@ CREATE TABLE IF NOT EXISTS Power_supply(
     Length INT,
     Type VARCHAR(100),
     Size VARCHAR(100),
-    FOREIGN KEY (IdComponent) REFERENCES Component
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
 );
 
 CREATE TABLE IF NOT EXISTS Storage(
     IdComponent INT PRIMARY KEY,
-    FOREIGN KEY (IdComponent) REFERENCES Component
+    Type VARCHAR(100),
+    Size INT,
+    TransferSpeed INT,
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
 );
 
+
+CREATE TABLE IF NOT EXISTS Computer(
+    IdComputer INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Username VARCHAR(100) NOT NULL,
+    UNIQUE (Name, Username),
+    FOREIGN KEY (Username) REFERENCES User(Username)
+);
+
+CREATE TABLE IF NOT EXISTS Made_of(
+    IdComputer INT,
+    IdComponent INT,
+    PRIMARY KEY (IdComputer, IdComponent),
+    FOREIGN KEY (IdComputer) REFERENCES Computer(IdComputer),
+    FOREIGN KEY (IdComponent) REFERENCES Component(IdComponent)
+);
