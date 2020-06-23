@@ -2,6 +2,7 @@ package db;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
+import users.User;
 import component.*;
 public class Connect {
 	private final String root="computerPartsReader";
@@ -156,25 +157,29 @@ public class Connect {
 	public ArrayList<Cases> loadCases() throws SQLException {
 		ArrayList<Cases> list=new ArrayList<Cases>();
 		Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		String query1="SELECT * FROM Case";
-		ResultSet rs=st.executeQuery(query1);
+		Statement statement2=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		String query="SELECT * FROM Case";
+		ResultSet rs=st.executeQuery(query);
 		while (rs.next()) {
 			Cases cs;
 			String size=rs.getString(2);
-			String mbtype=rs.getString(3);
-			String psuSize=rs.getString(4);
-			int maxpsuL=rs.getInt(5);
-			int maxgpuL=rs.getInt(6);
-			int maxcpuFanHeight=rs.getInt(7);
+			String psuSize=rs.getString(3);
+			int maxpsuL=rs.getInt(4);
+			int maxgpuL=rs.getInt(5);
+			int maxcpuFanHeight=rs.getInt(6);
 			HashSet<String> h=new HashSet<String>();
-			h.add(mbtype);
 			int i=rs.getInt(1);
-			String query2="SELECT * FROM Component WHERE IdComponent = '"+i+"'";
-			ResultSet rs2=statement1.executeQuery(query2);
-			rs2.next();
-			String name=rs2.getString(2);
-			BigDecimal n=rs2.getBigDecimal(3);
-			String brand=rs2.getString(4);
+			String query2="SELECT * FROM Made_of WHERE IdComponent='"+i+"'";
+			ResultSet rs2=statement2.executeQuery(query2);
+			while(rs2.next()) {
+				h.add(rs2.getString(2));
+			}
+			String query1="SELECT * FROM Component WHERE IdComponent = '"+i+"'";
+			ResultSet rs1=statement1.executeQuery(query1);
+			rs1.next();
+			String name=rs1.getString(2);
+			BigDecimal n=rs1.getBigDecimal(3);
+			String brand=rs1.getString(4);
 			cs=new Cases(name, n.doubleValue(), brand,size, h, psuSize,maxpsuL,maxgpuL, maxcpuFanHeight);
 			list.add(cs);
 		}
@@ -243,6 +248,22 @@ public class Connect {
 		else 
 			return "Salt not found";
 		return s;
+	}
+	
+	public boolean hasUser(String username, String password) {
+		String query="select count(*) as utenti from User where username ='"+username+"' and password = '"+password+"'";
+		int i=0;
+		try{
+			ResultSet rs=st.executeQuery(query);
+			rs.next();
+			i=rs.getInt(1);
+		}catch(SQLException e) {
+			return false;
+		}
+		if(i==1)
+			return true;
+		else
+			return false;
 	}
 	
 	public void closeConnection() throws SQLException {
