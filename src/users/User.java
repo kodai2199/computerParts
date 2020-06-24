@@ -47,7 +47,7 @@ public class User {
 	}
 	
 	public static boolean create(String username, String password, String secretQuestion, String secretAnswer) {
-		//Generate a new User.
+		//Generate a new User
 		String salt = generateSalt();
 		password = hash(password, salt);
 		String tmp = secretAnswer.toUpperCase();
