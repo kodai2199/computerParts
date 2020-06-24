@@ -53,7 +53,7 @@
          </children></VBox>
    </center>
    <bottom>
-      <Label id="login_error_msg" fx:id="error_msg" alignment="TOP_CENTER" opacity="0.0" text="Wrong username or password" textFill="RED" BorderPane.alignment="CENTER">
+      <Label fx:id="login_error_msg" alignment="TOP_CENTER" opacity="0.0" text="Wrong username or password" textFill="RED" BorderPane.alignment="CENTER">
          <font>
             <Font size="18.0" />
          </font>

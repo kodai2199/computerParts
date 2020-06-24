@@ -52,11 +52,12 @@ public class User {
 		password = hash(password, salt);
 		String tmp = secretAnswer.toUpperCase();
 		secretAnswer = hash(tmp, salt);
+		boolean r = false;
 		
 		try {
 			// 	Try to insert into the database
 			Connect db = new Connect();
-			return db.insertUser(username, password, salt, secretQuestion, secretAnswer);
+			r = db.insertUser(username, password, salt, secretQuestion, secretAnswer);
 		}
 		catch (SQLException e)
 		{
@@ -65,7 +66,7 @@ public class User {
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return r;
 	}
 	
 	private static String hash(String passwordToHash, String salt) {														//Hash code for the password cryptography.
