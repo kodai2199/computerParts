@@ -58,7 +58,7 @@ public class GuiController {
 		}
 		catch (SecurityException e){
 			this.show(login_error_msg);
-			System.out.println("Wrong password or username does not exists.");\
+			System.out.println("Wrong password or username does not exists.");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
