@@ -267,7 +267,7 @@ public class Connect {
 	}
 
 	public boolean insertUser(String username, String password, String salt, String question, String answer) {
-		String query="INSERT INTO User(Username, Password, Salt, Privileges, secretQuestion, secretAnswer) Values('"+username+"', '"+password+"', '"+salt+"', '0', '"+question+"', '"+answer+"')";
+		String query="INSERT INTO User(Username, Password, Salt, Privileges, secretQuestion, secretAnswer) Values ('"+username+"', '"+password+"', '"+salt+"', '0', '"+question+"', '"+answer+"')";
 		try {
 			st.executeQuery(query);
 		}catch(SQLException e) {

@@ -122,14 +122,13 @@ public class GuiController {
 			// REGEX for password validation
 			System.out.println("Nome utente: "+user);
 			System.out.println("Password: "+pwd1);
-			System.out.println("Domanda segreta: quanto ce l'ho lungo?");
-			System.out.println("Risposta: 25cm");
+			System.out.println("Domanda segreta: "+question);
+			System.out.println("Risposta: "+answer);
 			if(User.create(user, pwd1, question, answer)) {
 				System.out.println("User successfully created");
 			} else {
 				System.out.println("Error while creating user");
 			}
-			// Check it worked
 		}
 		catch (SecurityException e){
 			// TODO
