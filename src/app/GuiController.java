@@ -1,10 +1,13 @@
 package app;
 
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -14,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import users.User;
 
 public class GuiController {
@@ -31,6 +35,9 @@ public class GuiController {
 	
 	@FXML
 	private PasswordField pwd;
+	
+	@FXML
+	private Label login_error_msg;
 	
 	public void initialize() {
         // initialization here, if needed...
@@ -50,11 +57,17 @@ public class GuiController {
 			System.out.println("Login effettuato.");
 		}
 		catch (SecurityException e){
-			System.out.println("Wrong password or username does not exists.");
-			
+			this.show(login_error_msg);
+			System.out.println("Wrong password or username does not exists.");\
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void show(Node n) {
+		FadeTransition ft = new FadeTransition(Duration.millis(100), n);
+		ft.setToValue(1);
+		ft.play();
 	}
 }
