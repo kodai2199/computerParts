@@ -27,6 +27,8 @@ public class GuiController {
 	
 	private Stage stage;
 	
+	
+	// Login widgets
 	@FXML
 	private BorderPane login_container;
 	
@@ -39,8 +41,25 @@ public class GuiController {
 	@FXML
 	private Label login_error_msg;
 	
+	
+	// Signup widgets
 	@FXML
 	private BorderPane signup_container;
+	
+	@FXML
+	private TextField signup_user;
+	
+	@FXML
+	private PasswordField signup_pwd1;
+	
+	@FXML
+	private PasswordField signup_pwd2;
+	
+	@FXML
+	private TextField signup_question;
+	
+	@FXML
+	private TextField signup_answer;
 	
 	public void initialize() {
         // initialization here, if needed...
@@ -57,6 +76,7 @@ public class GuiController {
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("app.css").toExternalForm());
 			stage.setScene(scene);
+			stage.show();
 		}
 		catch (SecurityException e){
 			this.show(login_error_msg);
@@ -79,12 +99,24 @@ public class GuiController {
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("app.css").toExternalForm());
 			stage.setScene(scene);
+			stage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void signup() {
-		
+		try {
+			String user = this.signup_user.getText();
+			String pwd1 = this.signup_pwd1.getText();
+			String pwd2 = this.signup_pwd2.getText();
+			System.out.println(user);
+		}
+		catch (SecurityException e){
+			// TODO
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

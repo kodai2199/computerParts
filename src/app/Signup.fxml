@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="signup_container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="721.0" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.GuiController">
+   <center>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="std-label-for-textfield" stylesheets="@app.css" text="Username" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="-40.0" />
+               </VBox.margin>
+            </Label>
+            <TextField styleClass="std-textfield" stylesheets="@app.css" />
+            <Label styleClass="std-label-for-textfield" stylesheets="@app.css" text="Password" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField layoutX="10.0" layoutY="148.0" styleClass="std-textfield" stylesheets="@app.css" />
+            <Label styleClass="std-label-for-textfield" stylesheets="@app.css" text="Confirm password" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField layoutX="10.0" layoutY="160.0" styleClass="std-textfield" stylesheets="@app.css" />
+            <Label styleClass="std-label-for-textfield" stylesheets="@app.css" text="Secret question" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField layoutX="10.0" layoutY="198.0" styleClass="std-textfield" stylesheets="@app.css" />
+            <Label layoutX="94.0" layoutY="189.0" styleClass="std-label-for-textfield" stylesheets="@app.css" text="Answer" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField layoutX="10.0" layoutY="218.0" styleClass="std-textfield" stylesheets="@app.css" />
+            <Button mnemonicParsing="false" stylesheets="@app.css" text="Sign up">
+               <styleClass>
+                  <String fx:value="std-button" />
+                  <String fx:value="padding-above" />
+               </styleClass>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+</BorderPane>

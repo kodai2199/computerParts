@@ -46,7 +46,7 @@ public class User {
 		}
 	}
 	
-	public static void create(String username, String password, String secretQuestion, String secretAnswer) {
+	public static boolean create(String username, String password, String secretQuestion, String secretAnswer) {
 		//Generate a new User.
 		String salt = generateSalt();
 		password = hash(password, salt);
@@ -56,7 +56,7 @@ public class User {
 		try {
 			// 	Try to insert into the database
 			Connect db = new Connect();
-			db.insertUser(username, password, salt, secretQuestion, secretAnswer);
+			return db.insertUser(username, password, salt, secretQuestion, secretAnswer);
 		}
 		catch (SQLException e)
 		{
@@ -65,6 +65,7 @@ public class User {
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	private static String hash(String passwordToHash, String salt) {														//Hash code for the password cryptography.
