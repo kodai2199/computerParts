@@ -8,6 +8,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -30,15 +31,29 @@
                </font>
             </Label>
             <PasswordField fx:id="pwd" styleClass="std-textfield" stylesheets="@app.css" />
-            <Button mnemonicParsing="false" onMouseClicked="#login" stylesheets="@app.css" text="Login">
-               <styleClass>
-                  <String fx:value="std-button" />
-                  <String fx:value="padding-above" />
-               </styleClass></Button>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#showSignupPane" onMouseClicked="#login" prefWidth="90.0" stylesheets="@app.css" text="Sign up">
+                     <styleClass>
+                        <String fx:value="std-button" />
+                        <String fx:value="padding-above" />
+                     </styleClass>
+                  </Button>
+                  <Button mnemonicParsing="false" onMouseClicked="#login" prefWidth="90.0" stylesheets="@app.css" text="Login">
+                     <styleClass>
+                        <String fx:value="std-button" />
+                        <String fx:value="padding-above" />
+                     </styleClass>
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children></VBox>
    </center>
    <bottom>
-      <Label fx:id="login_error_msg" alignment="TOP_CENTER" opacity="0.0" text="Wrong username or password" textFill="RED" BorderPane.alignment="CENTER">
+      <Label id="login_error_msg" fx:id="error_msg" alignment="TOP_CENTER" opacity="0.0" text="Wrong username or password" textFill="RED" BorderPane.alignment="CENTER">
          <font>
             <Font size="18.0" />
          </font>

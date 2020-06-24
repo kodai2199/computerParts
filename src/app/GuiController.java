@@ -39,6 +39,9 @@ public class GuiController {
 	@FXML
 	private Label login_error_msg;
 	
+	@FXML
+	private BorderPane signup_container;
+	
 	public void initialize() {
         // initialization here, if needed...
     }
@@ -54,11 +57,9 @@ public class GuiController {
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("app.css").toExternalForm());
 			stage.setScene(scene);
-			System.out.println("Login effettuato.");
 		}
 		catch (SecurityException e){
 			this.show(login_error_msg);
-			System.out.println("Wrong password or username does not exists.");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -69,5 +70,21 @@ public class GuiController {
 		FadeTransition ft = new FadeTransition(Duration.millis(100), n);
 		ft.setToValue(1);
 		ft.play();
+	}
+	
+	public void showSignupPane() {
+		try {
+			stage = (Stage)login_container.getScene().getWindow();
+			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("Signup.fxml"));
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("app.css").toExternalForm());
+			stage.setScene(scene);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void signup() {
+		
 	}
 }
