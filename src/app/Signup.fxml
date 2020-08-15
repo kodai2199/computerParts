@@ -7,6 +7,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -47,16 +48,39 @@
                </font>
             </Label>
             <TextField fx:id="signup_answer" layoutX="10.0" layoutY="218.0" styleClass="std-textfield" stylesheets="@app.css" />
-            <Button mnemonicParsing="false" onAction="#signup" stylesheets="@app.css" text="Sign up">
-               <styleClass>
-                  <String fx:value="std-button" />
-                  <String fx:value="padding-above" />
-               </styleClass>
-            </Button>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#showLoginPane" stylesheets="@app.css" text="&lt; Back to Login">
+                     <styleClass>
+                        <String fx:value="std-button" />
+                        <String fx:value="padding-above" />
+                     </styleClass>
+                  </Button>
+                  <Button fx:id="signup_btn" mnemonicParsing="false" onAction="#signup" stylesheets="@app.css" text="Sign up">
+                     <styleClass>
+                        <String fx:value="std-button" />
+                        <String fx:value="padding-above" />
+                     </styleClass>
+                     <HBox.margin>
+                        <Insets left="45.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
       </VBox>
    </center>
+   <top>
+      <Label fx:id="signup_msg" opacity="0.0" text="There was an error while creating the user" textFill="RED" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="-60.0" top="30.0" />
+         </BorderPane.margin>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </top>
 </BorderPane>

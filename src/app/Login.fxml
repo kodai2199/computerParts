@@ -24,13 +24,13 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="user" styleClass="std-textfield" stylesheets="@app.css" />
+            <TextField fx:id="login_user" styleClass="std-textfield" stylesheets="@app.css" />
             <Label styleClass="std-label-for-textfield" stylesheets="@app.css" text="Password" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <PasswordField fx:id="pwd" styleClass="std-textfield" stylesheets="@app.css" />
+            <PasswordField fx:id="login_pwd" styleClass="std-textfield" stylesheets="@app.css" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#showSignupPane" onMouseClicked="#login" prefWidth="90.0" stylesheets="@app.css" text="Sign up">

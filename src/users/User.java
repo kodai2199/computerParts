@@ -57,12 +57,14 @@ public class User {
 		try {
 			// 	Try to insert into the database
 			Connect db = new Connect();
+			/* Just for logging and debugging purposes
 			System.out.println("AFTER HASH");
 			System.out.println("Nome utente: "+username);
 			System.out.println("Password: "+password);
 			System.out.println("Salt: "+salt);
 			System.out.println("Domanda segreta: "+secretQuestion);
 			System.out.println("Risposta: "+secretAnswer);
+			*/ 
 			r = db.insertUser(username, password, salt, secretQuestion, secretAnswer);
 		}
 		catch (SQLException e)
