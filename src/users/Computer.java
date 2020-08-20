@@ -1,6 +1,9 @@
-package users;
-import component.*;
+package main.java.users;
+
+import main.java.component.*;
 import java.util.*;
+
+
 public class Computer {
 	private ArrayList<Component> computer;
 	private String name;

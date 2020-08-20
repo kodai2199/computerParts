@@ -1,12 +1,13 @@
-package users;
+package main.java.users;
+
 import java.io.*;
 import java.util.*;
-
-import db.Connect;
-
+import main.java.db.Connect;
 import java.security.*;
 import java.sql.SQLException;
 import java.nio.charset.StandardCharsets;
+
+
 public class User {
 	private String username;
 	private String password;

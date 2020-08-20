@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="signup_container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="721.0" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.GuiController">
+<BorderPane fx:id="signup_container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="721.0" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.app.controller.SignupController">
    <center>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="250.0" BorderPane.alignment="CENTER">
          <children>
@@ -50,7 +50,7 @@
             <TextField fx:id="signup_answer" layoutX="10.0" layoutY="218.0" styleClass="std-textfield" stylesheets="@app.css" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#showLoginPane" stylesheets="@app.css" text="&lt; Back to Login">
+                  <Button mnemonicParsing="false" onAction="#showLogin" stylesheets="@app.css" text="&lt; Back to Login">
                      <styleClass>
                         <String fx:value="std-button" />
                         <String fx:value="padding-above" />
