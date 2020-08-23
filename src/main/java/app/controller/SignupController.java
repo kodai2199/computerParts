@@ -37,11 +37,7 @@ public class SignupController extends GenericController {
 	
 	@FXML
 	public void showLogin() {
-		try {
-			stage.setScene(ComputerPartsApp.getScenes().get(SceneName.LOGIN).getScene());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		stage.setScene(ComputerPartsApp.getScenes().get(SceneName.LOGIN).getScene());
 	}
 	
 	@FXML

@@ -1,9 +1,7 @@
 package main.java.app;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -31,15 +29,13 @@ public class ComputerPartsApp extends Application {
 		scenes.put(SceneName.LOGIN, new FxmlData(LOGIN_FXML, SceneName.LOGIN, stage));
 		scenes.put(SceneName.HOME, new FxmlData(HOME_FXML, SceneName.HOME, stage));
 		scenes.put(SceneName.SIGNUP, new FxmlData(SIGNUP_FXML, SceneName.SIGNUP, stage));
-		scenes.put(SceneName.CATEGORYLIST, new OptionableFxmlData(CATEGORYLIST_FXML, SceneName.CATEGORYLIST, stage));
+		scenes.put(SceneName.CATEGORYLIST, new FxmlData(CATEGORYLIST_FXML, SceneName.CATEGORYLIST, stage));
 		
-		try {
-			stage.setScene(scenes.get(SceneName.LOGIN).getScene());
-			stage.setTitle("Build your computer");
-			stage.show();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}	}
+		stage.setScene(scenes.get(SceneName.LOGIN).getScene());
+		stage.setTitle("Build your computer");
+		stage.show();
+
+	}	
 	
 	public static Map<SceneName, FxmlData> getScenes(){
 		return scenes;

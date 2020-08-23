@@ -10,9 +10,13 @@ import javafx.scene.Scene;
 public class FxmlLoad {
 	
 	public Scene load(FxmlData fxmlData) throws FileNotFoundException {
+		/*
+		 * Disabled to force refresh
 		if (fxmlData.hasScene()) {
 			return fxmlData.getScene();
 		}
+		*/
+		
 		URL url = FxmlLoad.class.getClassLoader().getResource(fxmlData.getResourceName());
 		if (url == null) {
 			throw(new FileNotFoundException());

@@ -1,7 +1,10 @@
 package main.java.app;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -16,6 +19,15 @@ public class FxmlData {
 	private SceneName sceneName;
 	private Stage stage;
 	private Scene scene;
+	
+	/*
+	 * This map provides a simple "interface" for inter-controller
+	 * communication: the controller A (loaded from FxmlData A) 
+	 * sets an option on FxmlData B and then sets FxmlData B's scene
+	 * as scene. Controller B will then be able to read the options
+	 * that were set from Controller A.
+	 * */
+	private static Map<String, String> options = new HashMap<>();
 	
 	/**
 	 * @param resourceName the FXML's filename
@@ -44,11 +56,24 @@ public class FxmlData {
 		this.scene = scene;
 	}
 	
-	public Scene getScene() throws FileNotFoundException {
+	public Scene getScene() {
+		/*
+		 * Disabled to force refresh and controller reinitialization
 		if (scene == null) {
+			System.out.println("Called FxmlLoad.load");
 			scene = new FxmlLoad().load(this);
 		}
-		return scene;
+		*/
+
+		try { 
+			System.out.println("Called FxmlLoad.load");
+			scene = new FxmlLoad().load(this);
+			return scene;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			Platform.exit();
+			return null;
+		}
 	}
 	
 	public boolean hasScene() {
@@ -57,6 +82,14 @@ public class FxmlData {
 		} else {
 			return true;
 		}
+	}
+
+	public Map<String, String> getOptions() {
+		return options;
+	}
+
+	public void setOption(String key, String value) {
+		options.put(key, value);
 	}
 	
 }
