@@ -18,6 +18,7 @@ public class ComputerPartsApp extends Application {
 	private static final String LOGIN_FXML = "fxml/login.fxml";
 	private static final String HOME_FXML = "fxml/home.fxml";
 	private static final String SIGNUP_FXML = "fxml/signup.fxml";
+	private static final String CATEGORYLIST_FXML = "fxml/categorylist.fxml";
 	
 	private static Map<SceneName, FxmlData> scenes = new HashMap<>();
 	
@@ -30,6 +31,7 @@ public class ComputerPartsApp extends Application {
 		scenes.put(SceneName.LOGIN, new FxmlData(LOGIN_FXML, SceneName.LOGIN, stage));
 		scenes.put(SceneName.HOME, new FxmlData(HOME_FXML, SceneName.HOME, stage));
 		scenes.put(SceneName.SIGNUP, new FxmlData(SIGNUP_FXML, SceneName.SIGNUP, stage));
+		scenes.put(SceneName.CATEGORYLIST, new OptionableFxmlData(CATEGORYLIST_FXML, SceneName.CATEGORYLIST, stage));
 		
 		try {
 			stage.setScene(scenes.get(SceneName.LOGIN).getScene());
