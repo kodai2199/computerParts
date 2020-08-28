@@ -1,4 +1,4 @@
-package main.java.app.controller;
+package main.java.controller;
 
 import main.java.app.ComputerPartsApp;
 import main.java.app.FxmlData;
@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 
 
-public class HomeController extends GenericController {
+public class HomeController extends StdMenuBarController {
 	
 	// Home widgets
 	@FXML
@@ -39,9 +39,9 @@ public class HomeController extends GenericController {
 			i.setFitWidth(200.0);
 			i.setPickOnBounds(true);
 			Label l = new Label(Component.COMPONENT_LIST.get(category));
+			l.getStyleClass().add("item-title");
 			HBox box = new HBox(i, l);
 			box.getStyleClass().add("category-box");
-			
 			EventHandler<MouseEvent> boxHandler = new EventHandler<MouseEvent>() {
 			    @Override
 			    public void handle(MouseEvent event) {

@@ -66,7 +66,6 @@ public class FxmlData {
 		*/
 
 		try { 
-			System.out.println("Called FxmlLoad.load");
 			scene = new FxmlLoad().load(this);
 			return scene;
 		} catch (FileNotFoundException e) {

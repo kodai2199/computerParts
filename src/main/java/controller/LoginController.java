@@ -1,4 +1,4 @@
-package main.java.app.controller;
+package main.java.controller;
 
 import main.java.app.ComputerPartsApp;
 import main.java.app.SceneName;
@@ -38,7 +38,7 @@ public class LoginController extends GenericController {
 		try {
 			String user = this.login_user.getText();
 			String pwd = this.login_pwd.getText();
-			this.user = new User(user, pwd);
+			ComputerPartsApp.setUser(new User(user, pwd));
 			stage.setScene(ComputerPartsApp.getScenes().get(SceneName.HOME).getScene());
 			System.out.println("Login successful");
 		}

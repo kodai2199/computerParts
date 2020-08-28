@@ -1,4 +1,4 @@
-package main.java.app.controller;
+package main.java.controller;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;

@@ -8,9 +8,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" minHeight="800.0" minWidth="1000.0" scaleShape="false" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" minHeight="800.0" minWidth="1000.0" scaleShape="false" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.CategoryListController">
    <children>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="60.0" stylesheets="@app.css">
          <children>
@@ -50,7 +51,11 @@
       </HBox>
       <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="bg1" stylesheets="@app.css" VBox.vgrow="ALWAYS">
          <content>
-            <VBox prefHeight="200.0" prefWidth="100.0" styleClass="bg1" stylesheets="@app.css" />
+            <TilePane fx:id="categorylist_tilepane" alignment="TOP_CENTER" hgap="50.0" prefColumns="3" prefHeight="200.0" prefWidth="200.0" styleClass="bg2" stylesheets="@app.css" vgap="20.0">
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </TilePane>
          </content></ScrollPane>
    </children>
 </VBox>
