@@ -52,6 +52,9 @@ public class Connect {
 		while (rs.next()) {
 			Motherboards mb;
 			String lighting=rs.getString(2);
+			if (lighting.equals("NO")) {
+				lighting = "None";
+			}
 			String chipset=rs.getString(3);
 			String socket=rs.getString(4);
 			String ramType=rs.getString(5);
@@ -86,6 +89,9 @@ public class Connect {
 			String type=rs.getString(3);
 			int frequency=rs.getInt(4);
 			String lighting=rs.getString(5);
+			if (lighting.equals("0")) {
+				lighting = "None";
+			}
 			int i=rs.getInt(1);
 			String query2="SELECT * FROM Component WHERE IdComponent = '"+i+"'";
 			ResultSet rs2=statement1.executeQuery(query2);
@@ -169,11 +175,16 @@ public class Connect {
 			int maxcpuFanHeight=rs.getInt(6);
 			HashSet<String> h=new HashSet<String>();
 			int i=rs.getInt(1);
+			
+			/* What is this for?
+			 * Why do we load this?
 			String query2="SELECT * FROM Made_of WHERE IdComponent='"+i+"'";
 			ResultSet rs2=statement2.executeQuery(query2);
 			while(rs2.next()) {
 				h.add(rs2.getString(2));
 			}
+			*/
+			
 			String query1="SELECT * FROM Component WHERE IdComponent = '"+i+"'";
 			ResultSet rs1=statement1.executeQuery(query1);
 			rs1.next();
@@ -205,6 +216,9 @@ public class Connect {
 			String name=rs2.getString(2);
 			BigDecimal n=rs2.getBigDecimal(3);
 			String brand=rs2.getString(4);
+			if (type.equals("M.2")) {
+				format = new BigDecimal(0);
+			}
 			st=new Storage(name, n.doubleValue(), brand, type, format.doubleValue(), size, ts);
 			list.add(st);
 		}

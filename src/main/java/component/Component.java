@@ -13,7 +13,7 @@ public abstract class Component {
 	
 	static {
 		Map<String, String> m = new LinkedHashMap<String, String>();
-		m.put("Case_fan", "Case fans");
+		//m.put("Case_fan", "Case fans");
 		m.put("Cases", "Cases");
 		m.put("CPU_Cooling", "CPU coolers");
 		m.put("CPU", "CPUs");
