@@ -9,9 +9,9 @@ public class CPU_Cooling extends Component {
 	protected static final String printable_name = "CPU coolers";
 
 
-	public CPU_Cooling(String name, double price, String brand, String lighting, String type, int airflow,
+	public CPU_Cooling(int id, String name, double price, String brand, String lighting, String type, int airflow,
 			String socket, int height) {
-		super(name, price, brand);
+		super(id, name, price, brand);
 		this.lighting = lighting;
 		this.type = type;
 		this.airflow = airflow;

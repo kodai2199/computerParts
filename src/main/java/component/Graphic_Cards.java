@@ -11,9 +11,9 @@ public class Graphic_Cards extends Component {
 	private String type;					//GTX 1080, etc...
 	protected static final String printable_name = "Graphic cards";
 	
-	public Graphic_Cards(String name, double price, String brand, String lighting, int vram, int core_frequency,
+	public Graphic_Cards(int id, String name, double price, String brand, String lighting, int vram, int core_frequency,
 			int memory_frequency, int length, int wattage, String multi_GPU,String type) {
-		super(name, price, brand);
+		super(id, name, price, brand);
 		this.lighting = lighting;
 		this.vram = vram;
 		this.core_frequency = core_frequency;

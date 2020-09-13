@@ -7,8 +7,8 @@ public class Storage extends Component {
 	private int transfer_speed;
 	protected static final String printable_name = "Storage";
 
-	public Storage(String name, double price, String brand, String type, double format, int size, int transfer_speed) {
-		super(name, price, brand);
+	public Storage(int id, String name, double price, String brand, String type, double format, int size, int transfer_speed) {
+		super(id, name, price, brand);
 		this.type = type;
 		this.format=format;
 		this.size = size;

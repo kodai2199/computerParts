@@ -12,9 +12,9 @@ public class Cases extends Component {
 	private int max_cpu_fan_height;
 	protected static final String printable_name = "Cases";
 	
-	public Cases(String name, double price, String brand, String size, HashSet<String> motherboards, String psu_size,
+	public Cases(int id, String name, double price, String brand, String size, HashSet<String> motherboards, String psu_size,
 		int max_psu_length, int max_gpu_length, int max_cpu_fan_height) {
-		super(name, price, brand);
+		super(id, name, price, brand);
 		this.size = size;
 		this.motherboards = motherboards;
 		this.psu_size = psu_size;

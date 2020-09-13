@@ -20,8 +20,16 @@ public class CategoryListController extends StdMenuBarController {
 	public void initialize() {
         FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST);
         String category = fxml.getOptions().get("Category");
-        System.out.println("Category "+category);
+        fxml.consumeOption("Category");
         switch (category) {
+        	case "Cases":
+        		// TODO
+        		//displayGPUs(ComputerPartsApp.getGPUs());
+        		break;
+        	case "CPU coolers":
+        		// TODO
+        		//displayGPUs(ComputerPartsApp.getGPUs());
+        		break;
         	case "CPUs":
         		displayCPUs(ComputerPartsApp.getCPUs());
         		break;
@@ -44,7 +52,9 @@ public class CategoryListController extends StdMenuBarController {
         		System.out.println("No valid category specified.");
         		break;
         }
+        super.initalize(fxml);
 	}
+	
 	
 	private void displayCPUs(ArrayList<CPU> cpus) {
 		for (CPU c:cpus) {

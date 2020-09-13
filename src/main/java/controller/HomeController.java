@@ -52,6 +52,10 @@ public class HomeController extends StdMenuBarController {
 			box.setOnMouseClicked(boxHandler);
 			this.home_tilepane.getChildren().add(box);
 		}
+		
+		// Run the Menu Bar Controller
+		FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST);
+		super.initalize(fxml);
 		System.out.println("Initialized Home Controller");
 	}
 	
@@ -64,6 +68,7 @@ public class HomeController extends StdMenuBarController {
 		 * */
         FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST);
         fxml.setOption("Category", category);
+        fxml.setLastSceneName(SceneName.HOME);
         stage.setScene(ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST).getScene());
 	}
 	

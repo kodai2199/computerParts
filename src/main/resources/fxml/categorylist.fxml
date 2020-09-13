@@ -27,17 +27,17 @@
                   <Insets left="30.0" />
                </HBox.margin>
             </Pane>
-            <Button layoutX="456.0" layoutY="42.0" mnemonicParsing="false" styleClass="std-button" text="Go back">
+            <Button fx:id="back" layoutX="456.0" layoutY="42.0" mnemonicParsing="false" onAction="#goBack" styleClass="std-button" text="Go back">
                <tooltip>
                   <Tooltip text="Show the list of builds created in the past" />
                </tooltip>
             </Button>
-            <Button mnemonicParsing="false" styleClass="std-button" text="Saved Builds">
+            <Button fx:id="savedbuilds" mnemonicParsing="false" styleClass="std-button" text="Saved Builds">
                <tooltip>
                   <Tooltip text="Show the list of builds created in the past" />
                </tooltip></Button>
-            <Button mnemonicParsing="false" styleClass="std-button" text="New Build" />
-            <Button mnemonicParsing="false" styleClass="std-button" stylesheets="@app.css" text="Your profile" />
+            <Button fx:id="newbuild" mnemonicParsing="false" styleClass="std-button" text="New Build" />
+            <Button fx:id="profile" mnemonicParsing="false" styleClass="std-button" stylesheets="@app.css" text="Your profile" />
          </children>
          <padding>
             <Insets right="50.0" />

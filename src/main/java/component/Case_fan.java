@@ -7,8 +7,8 @@ public class Case_fan extends Component {
 	private int size;
 	protected static final String printable_name = "Case fans";
 	
-	public Case_fan(String name, double price, String brand, String lighting, String type, int airflow, int size) {
-		super(name, price, brand);
+	public Case_fan(int id, String name, double price, String brand, String lighting, String type, int airflow, int size) {
+		super(id, name, price, brand);
 		this.lighting = lighting;
 		this.type = type;
 		this.airflow = airflow;

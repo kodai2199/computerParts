@@ -6,6 +6,7 @@ import java.util.Map;
 
 public abstract class Component {
 	private String name;
+	private int id;
 	private double price;
 	private String brand;
 	private static final String printable_name = "";
@@ -25,7 +26,8 @@ public abstract class Component {
 		COMPONENT_LIST = Collections.unmodifiableMap(m);
 	}
 	
-	public Component (String name, double price, String brand) {
+	public Component (int id, String name, double price, String brand) {
+		this.id = id;
 		this.name=name;
 		this.price=price;
 		this.brand=brand;
@@ -39,6 +41,10 @@ public abstract class Component {
 	 
 	 public String getBrand() {
 		 return brand;
+	 }
+	 
+	 public int getId() {
+		 return id;
 	 }
 	 
 	 public static String getPrintableName() {

@@ -7,8 +7,8 @@ public class CPU extends Component {
 	private int wattage;
 	protected static final String printable_name = "CPUs";
 	
-	public CPU (String name, double price, String brand, int frequency, int cores, String socket, int wattage) {
-		super(name, price,brand);
+	public CPU (int id, String name, double price, String brand, int frequency, int cores, String socket, int wattage) {
+		super(id, name, price,brand);
 		this.frequency=frequency;
 		this.cores=cores;
 		this.socket=socket;

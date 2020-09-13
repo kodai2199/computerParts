@@ -7,8 +7,8 @@ public class Memory extends Component {
 	private String lighting;
 	protected static final String printable_name = "Memory";
 	
-	public Memory(String name, double price, String brand, String ram_type, int frequency,String lighting, int size) {
-		super(name,price,brand);
+	public Memory(int id, String name, double price, String brand, String ram_type, int frequency,String lighting, int size) {
+		super(id, name, price, brand);
 		this.ram_type = ram_type;
 		this.frequency = frequency;
 		this.lighting=lighting;

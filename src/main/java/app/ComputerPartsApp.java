@@ -103,7 +103,6 @@ public class ComputerPartsApp extends Application {
 			for (Memory m:memory) {
 				loadBrandLogos(m.getBrand());
 			}
-			
 			psus = db.loadPowerSupplies();
 			for (Power_supplies p:psus) {
 				loadBrandLogos(p.getBrand());

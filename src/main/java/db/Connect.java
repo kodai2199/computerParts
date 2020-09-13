@@ -4,8 +4,12 @@ import java.sql.*;
 import java.util.*;
 import main.java.component.*;
 
+/**
+ *  This class manages the connection to the DB
+ *	and information exchange
+ */
 public class Connect {
-	private final String root="computerPartsReader";
+	private final String user="computerPartsReader";
 	private final String pw="w64YyHswZ36xE8J8";
 	private final String url="jdbc:mysql://ggh.zapto.org:3306/computerParts?useSSL=false";
 	private final String driver="com.mysql.jdbc.Driver";
@@ -14,7 +18,7 @@ public class Connect {
 	
 	public Connect() throws ClassNotFoundException, SQLException {
 		Class.forName(driver);
-		conn=DriverManager.getConnection(url,root,pw);
+		conn=DriverManager.getConnection(url, user, pw);
 		st=conn.createStatement(ResultSet.CONCUR_READ_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE);
 		st.setQueryTimeout(30);
 	}
@@ -37,7 +41,7 @@ public class Connect {
 			String name=rs2.getString(2);
 			BigDecimal n=rs2.getBigDecimal(3);
 			String brand=rs2.getString(4);
-			cpu=new CPU(name, n.doubleValue(), brand, fr, cores, socket, w);
+			cpu=new CPU(i, name, n.doubleValue(), brand, fr, cores, socket, w);
 			list.add(cpu);
 		}
 		statement1.close();
@@ -71,7 +75,7 @@ public class Connect {
 			String name=rs2.getString(2);
 			BigDecimal n=rs2.getBigDecimal(3);
 			String brand=rs2.getString(4);
-			mb=new Motherboards(name, n.doubleValue(), brand, lighting, chipset, socket, ramType, ramSlots, size, ramSpeed, multiGPU, maxMemory, maxM2);
+			mb=new Motherboards(i, name, n.doubleValue(), brand, lighting, chipset, socket, ramType, ramSlots, size, ramSpeed, multiGPU, maxMemory, maxM2);
 			list.add(mb);
 		}
 		statement1.close();
@@ -99,7 +103,7 @@ public class Connect {
 			String name=rs2.getString(2);
 			BigDecimal n=rs2.getBigDecimal(3);
 			String brand=rs2.getString(4);
-			m=new Memory(name, n.doubleValue(), brand, type, frequency, lighting, size);
+			m=new Memory(i, name, n.doubleValue(), brand, type, frequency, lighting, size);
 			list.add(m);
 		}
 		statement1.close();
@@ -124,7 +128,7 @@ public class Connect {
 			String name=rs2.getString(2);
 			BigDecimal n=rs2.getBigDecimal(3);
 			String brand=rs2.getString(4);
-			ps=new Power_supplies(name, n.doubleValue(), brand, wattage, length, type, size);
+			ps=new Power_supplies(i, name, n.doubleValue(), brand, wattage, length, type, size);
 			list.add(ps);
 		}
 		statement1.close();
@@ -153,7 +157,7 @@ public class Connect {
 			String name=rs2.getString(2);
 			BigDecimal n=rs2.getBigDecimal(3);
 			String brand=rs2.getString(4);
-			gc=new Graphic_Cards(name, n.doubleValue(), brand, lighting, vram, cf, mf, length, wattage, multigpu, type);
+			gc=new Graphic_Cards(i, name, n.doubleValue(), brand, lighting, vram, cf, mf, length, wattage, multigpu, type);
 			list.add(gc);
 		}
 		statement1.close();
@@ -163,7 +167,6 @@ public class Connect {
 	public ArrayList<Cases> loadCases() throws SQLException {
 		ArrayList<Cases> list=new ArrayList<Cases>();
 		Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		Statement statement2=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		String query="SELECT * FROM Case";
 		ResultSet rs=st.executeQuery(query);
 		while (rs.next()) {
@@ -175,23 +178,13 @@ public class Connect {
 			int maxcpuFanHeight=rs.getInt(6);
 			HashSet<String> h=new HashSet<String>();
 			int i=rs.getInt(1);
-			
-			/* What is this for?
-			 * Why do we load this?
-			String query2="SELECT * FROM Made_of WHERE IdComponent='"+i+"'";
-			ResultSet rs2=statement2.executeQuery(query2);
-			while(rs2.next()) {
-				h.add(rs2.getString(2));
-			}
-			*/
-			
 			String query1="SELECT * FROM Component WHERE IdComponent = '"+i+"'";
 			ResultSet rs1=statement1.executeQuery(query1);
 			rs1.next();
 			String name=rs1.getString(2);
 			BigDecimal n=rs1.getBigDecimal(3);
 			String brand=rs1.getString(4);
-			cs=new Cases(name, n.doubleValue(), brand,size, h, psuSize,maxpsuL,maxgpuL, maxcpuFanHeight);
+			cs=new Cases(i, name, n.doubleValue(), brand,size, h, psuSize,maxpsuL,maxgpuL, maxcpuFanHeight);
 			list.add(cs);
 		}
 		statement1.close();
@@ -219,7 +212,7 @@ public class Connect {
 			if (type.equals("M.2")) {
 				format = new BigDecimal(0);
 			}
-			st=new Storage(name, n.doubleValue(), brand, type, format.doubleValue(), size, ts);
+			st=new Storage(i, name, n.doubleValue(), brand, type, format.doubleValue(), size, ts);
 			list.add(st);
 		}
 		statement1.close();
@@ -245,7 +238,7 @@ public class Connect {
 			String name=rs2.getString(2);
 			BigDecimal n=rs2.getBigDecimal(3);
 			String brand=rs2.getString(4);
-			cc=new CPU_Cooling(name, n.doubleValue(), brand, lighting,type , airflow, socket, height);
+			cc=new CPU_Cooling(i, name, n.doubleValue(), brand, lighting,type , airflow, socket, height);
 			list.add(cc);
 		}
 		statement1.close();

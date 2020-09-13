@@ -3,7 +3,7 @@ package main.java.app;
 import javafx.stage.Stage;
 
 /**
- * Marks the ability of a controller to set a stage.s
+ * Marks the ability of a controller to set a stage.
  */
 
 public interface Stageable {

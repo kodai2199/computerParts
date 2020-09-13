@@ -7,8 +7,8 @@ public class Power_supplies extends Component {
 	private String size;		//ATX or other
 	protected static final String printable_name = "Power supplies";
 	
-	public Power_supplies(String name, double price, String brand, int wattage, int length, String type, String size) {
-		super(name, price, brand);
+	public Power_supplies(int id, String name, double price, String brand, int wattage, int length, String type, String size) {
+		super(id, name, price, brand);
 		this.wattage = wattage;
 		this.length = length;
 		this.type = type;
