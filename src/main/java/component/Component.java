@@ -47,6 +47,10 @@ public abstract class Component {
 		 return id;
 	 }
 	 
+	 public boolean equals(Component c) {
+		 return c.id == id;
+	 }
+	 
 	 public static String getPrintableName() {
 		 return printable_name;
 	 }	

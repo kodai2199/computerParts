@@ -28,7 +28,7 @@ public class FxmlData {
 	 * that were set from Controller A.
 	 * */
 	private static Map<String, String> options = new HashMap<>();
-	private static SceneName lastSceneName;
+	private SceneName lastSceneName;
 	
 	/**
 	 * @param resourceName the FXML's filename

@@ -20,7 +20,6 @@ public class CategoryListController extends StdMenuBarController {
 	public void initialize() {
         FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST);
         String category = fxml.getOptions().get("Category");
-        fxml.consumeOption("Category");
         switch (category) {
         	case "Cases":
         		// TODO

@@ -6,5 +6,5 @@ package main.java.app;
  *	A container for the name of the scenes
  */
 public enum SceneName {
-	LOGIN, SIGNUP, HOME, CATEGORYLIST
+	LOGIN, SIGNUP, HOME, CATEGORYLIST, BUILDLIST
 }

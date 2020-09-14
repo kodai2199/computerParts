@@ -54,7 +54,7 @@ public class HomeController extends StdMenuBarController {
 		}
 		
 		// Run the Menu Bar Controller
-		FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST);
+		FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.HOME);
 		super.initalize(fxml);
 		System.out.println("Initialized Home Controller");
 	}

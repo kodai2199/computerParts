@@ -1,31 +1,90 @@
 package main.java.users;
 
 import main.java.component.*;
+import main.java.db.Connect;
+import java.sql.ResultSet;
 import java.util.*;
 
-
+/*
+ * TODO all method must be edited to support direct resultset r/w;
+ * */
 public class Computer {
-	private ArrayList<Component> computer;
+	/*
+	 * IdComputer
+	 * */
+	private int id;
 	private String name;
-	private int nram;
-	private int ngpu;
-	private int nmotherboard;
-	private int ncpu;
-	private int npsu;
-	private int ncool;
-	private int ncase;
+	private ResultSet computerComponents;
 	
-	public Computer(String name) {
-		computer=new ArrayList<Component>();
-		this.name=name;
-		this.nram=0;
-		this.ngpu=0;
-		this.ncase=0;
-		this.ncool=0;
-		this.ncpu=0;
-		this.nmotherboard=0;
-		this.npsu=0;
-		this.ncase=0;
+	/*
+	 * Arraylist of all the components
+	 * */
+	private ArrayList<Component> computer;
+	
+	/*
+	 * Components
+	 * For simplicity, a single type of RAM and a single type of GPU
+	 * can be used at a time.
+	 */
+	private Cases chassis = null;
+	private CPU_Cooling cpu_cooler = null;
+	private CPU cpu = null;
+	private Graphic_Cards gpu = null;
+	private int ngpu = 0;
+	private Memory ram = null;
+	private int nram = 0;
+	private Motherboards motherboard = null;
+	private Power_supplies psu = null;
+	
+	public Computer(int id, String name, ResultSet computerComponents) {
+		this.id = id;
+		computer = new ArrayList<Component>();
+		this.name = name;
+		this.computerComponents = computerComponents;
+		loadComponents();
+	}
+
+	
+	/*
+	 * Tries to load from the database all the components in this build,
+	 * by reading the IdComponent from the computerComponents ResultSet.
+	 * This must be called at class construction in order to fill all the
+	 * relevant data before the class can be used.
+	 * */
+	public void loadComponents() {
+		try {
+			Connect db = new Connect();
+			while(computerComponents.next()) {
+				int idComponent = computerComponents.getInt("IdComponent");
+				switch (computerComponents.getString("Category")){
+					case "Case":
+						chassis = db.loadCase(idComponent);
+						computer.add(chassis);
+						break;
+					case "CPU_cooling":
+						cpu_cooler = db.loadCPU_cooler(idComponent);
+						computer.add(cpu_cooler);
+						break;
+					case "CPU":
+						cpu = db.loadCPU(idComponent);
+						computer.add(cpu);
+						break;
+					case "Graphics_card":
+						break;
+					case "Memory":
+						break;
+					case "Motherboard":
+						break;
+					case "Power_supply":
+						break;
+					case "Storage":
+						break;
+				}
+			}
+			computerComponents.first();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean addComponent(Component c) {
@@ -33,7 +92,8 @@ public class Computer {
 			computer.add(c);
 			return true;
 		}
-		else return false;
+		else 
+			return false;
 	}
 	
 	public boolean removeComponent(Component c) {
@@ -42,41 +102,46 @@ public class Computer {
 	}
 	
 	private boolean checkCompatibility(Component c) {
-		if (computer.size()==0)														//If there isn't any component, return true 
+		if (computer.size() == 0)														//If there isn't any component, return true 
 			return true;
 		Class<? extends Component> tmp = c.getClass();
 		if(tmp.getSimpleName().equalsIgnoreCase("Motherboards")) {					//Check if the component is a motherboard
-			if(this.nmotherboard==1) 
+			if(motherboard != null) 
 				return false;
-			else 
-				this.nmotherboard+=1;
-			Motherboards m=(Motherboards)c;
-			if(checkMotherboards(m)) 
-				return true;
 			else {
-				this.nmotherboard-=1;
-				return false;
+				motherboard = (Motherboards)c;
+				if(checkMotherboards(motherboard)) 
+					return true;
+				else {
+					motherboard = null;
+					return false;
+				}
 			}
 		}																		
 		else if(tmp.getSimpleName().equalsIgnoreCase("CPU")) {						//Check if the component is a CPU
-			if(ncpu==1)
+			if(cpu != null)
 				return false;
-			else
-				this.ncpu+=1;
-			CPU cpu=(CPU)c;
-			if(checkCPU(cpu))
-				return true;
 			else {
-				this.ncpu-=1;
-				return false;
+				cpu=(CPU)c;
+				if(checkCPU(cpu))
+					return true;
+				else {
+					cpu = null;
+					return false;
+				}
 			}
 		}
 		else if(tmp.getSimpleName().equalsIgnoreCase("Memory")) {					//Check if the component is a RAM
-			if(nram==8) 
+			// Different RAMs are not considered compatible
+			if (nram > 0) {
+				if(!ram.equals(c))
+					return false;
+			}
+			if(nram == 8) 
 				return false;
 			else 
 				nram+=1;
-			Memory ram=(Memory)c;
+			ram = (Memory)c;
 			if(checkMemory(ram)) 
 				return true;
 			else {
@@ -85,55 +150,60 @@ public class Computer {
 			}
 		}
 		else if(tmp.getSimpleName().equalsIgnoreCase("CPU_Cooling")) {				//Check if the component is a cooler
-			if(this.ncool==1)
+			if(cpu_cooler != null)
 				return false;
-			else
-				this.ncool+=1;
-			CPU_Cooling cc=(CPU_Cooling)c;
-			if(checkCooler(cc))
-				return true;
 			else {
-				ncool-=1;
-				return false;
+				cpu_cooler = (CPU_Cooling)c;
+				if(checkCooler(cpu_cooler))
+					return true;
+				else {
+					cpu_cooler = null;
+					return false;
+				}
 			}
 		}
 		else if(tmp.getSimpleName().equalsIgnoreCase("Cases")) {					//Check if the component is a case
-			if(this.ncase==1)
+			if(chassis != null)
 				return false;
-			else
-				ncase+=1;
-			Cases cs=(Cases)c;
-			if(checkCases(cs))
-				return true;
 			else {
-				ncase-=1;
-				return false;
+				chassis = (Cases)c;
+				if(checkCases(chassis))
+					return true;
+				else {
+					chassis = null;
+					return false;
+				}
 			}
 		}
 		else if(tmp.getSimpleName().equalsIgnoreCase("Graphic_Cards")) {			//Check if the component is a GPU
+			// Different GPUs are not considered compatible
+			if (ngpu > 0) {
+				if(!gpu.equals(c))
+					return false;
+			}
 			if(ngpu==2)
 				return false;
 			else 
-				ngpu+=1;
-			Graphic_Cards gpu=(Graphic_Cards)c;
+				ngpu += 1;
+			gpu = (Graphic_Cards)c;
 			if(checkGPU(gpu)) 
 				return true;
 			else {
-				ngpu-=1;
+				ngpu -= 1;
 				return false;
 			}
 		}
 		else if(tmp.getSimpleName().equalsIgnoreCase("Power_supplies")) {			//Check if the component is a PSU
-			if(this.npsu==1)
+			if(psu != null)
 				return false;
-			else
-				npsu+=1;
-			Power_supplies psu=(Power_supplies)c;
-			if(checkPSU(psu))
-				return true;
 			else {
-				npsu-=1;
-				return false;
+				psu = (Power_supplies)c;
+				if(checkPSU(psu))
+					return true;
+				else {
+					psu = null;
+					return false;
+				}
 			}
 		}
 		else if(tmp.getSimpleName().equalsIgnoreCase("Storage")) {					//Check if the component is a storage
@@ -194,7 +264,7 @@ public class Computer {
 				}
 			}
 		}
-		if(m.getMax_memory()<getMemory())
+		if(m.getMax_memory()<getMemoryCapacity())
 			return false;
 		return true;
 	}
@@ -234,7 +304,7 @@ public class Computer {
 				}
 				else 
 					return false;
-				if(m.getMax_memory()<(getMemory()+ram.getSize()))
+				if(m.getMax_memory()<(getMemoryCapacity()+ram.getSize()))
 					return false;
 			}
 			else if(tmp.getSimpleName().equalsIgnoreCase("CPU")) {
@@ -399,7 +469,8 @@ public class Computer {
 		return st;
 	}
 	
-	public int getMemory() {														//Get the total memory of the system.
+	//Get the total memory capacity of the system.
+	public int getMemoryCapacity() {														
 		int m=0;
 		for(Component c:computer) {
 			if(c.getClass().getSimpleName().equalsIgnoreCase("Memory")) {
@@ -414,6 +485,42 @@ public class Computer {
 		return this.name;
 	}
 	
+	public Cases getCase() {
+		return chassis;
+	}
+	
+	public CPU_Cooling getCPU_cooler() {
+		return cpu_cooler;
+	}
+	
+ 	public CPU getCPU() {
+		return cpu;
+	}
+	
+ 	public Graphic_Cards getGPU() {
+ 		return gpu;
+ 	}
+ 	
+ 	public int getGPUNumber() {
+ 		return ngpu;
+ 	}
+ 	
+ 	public Memory getMemory() {
+ 		return ram;
+ 	}
+ 	
+ 	public int getRAMnumber() {
+ 		return nram;
+ 	}
+ 	
+ 	public Motherboards getMotherboard() {
+ 		return motherboard;
+ 	}
+ 	
+ 	public Power_supplies getPSU() {
+ 		return psu;
+ 	}
+ 	
 	public void rename(String name) {												//Change the computer's name.
 		this.name=name;
 	}

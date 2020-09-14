@@ -3,24 +3,30 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 import main.java.component.*;
+import main.java.users.Computer;
+import main.java.users.User;
 
 /**
  *  This class manages the connection to the DB
  *	and information exchange
  */
 public class Connect {
-	private final String user="computerPartsReader";
-	private final String pw="w64YyHswZ36xE8J8";
+	private final String readOnlyUser="computerPartsReader";
+	private final String readOnlyPassword="w64YyHswZ36xE8J8";
+	private final String writeUser="cParts";
+	private final String writePassword="u^8e7p6J6anG3Wo%";
 	private final String url="jdbc:mysql://ggh.zapto.org:3306/computerParts?useSSL=false";
 	private final String driver="com.mysql.jdbc.Driver";
 	private Connection conn;
+	private Connection writeConnection;
 	private Statement st;
 	
 	public Connect() throws ClassNotFoundException, SQLException {
 		Class.forName(driver);
-		conn=DriverManager.getConnection(url, user, pw);
-		st=conn.createStatement(ResultSet.CONCUR_READ_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE);
-		st.setQueryTimeout(30);
+		conn = DriverManager.getConnection(url, readOnlyUser, readOnlyPassword);
+		writeConnection = DriverManager.getConnection(url, writeUser, writePassword);
+		st = conn.createStatement(ResultSet.CONCUR_READ_ONLY, ResultSet.TYPE_SCROLL_INSENSITIVE);
+		//st.setQueryTimeout(10);
 	}
 	
 	public ArrayList<CPU> loadCPUs() throws SQLException {
@@ -46,6 +52,25 @@ public class Connect {
 		}
 		statement1.close();
 		return list;
+	}
+	
+	public CPU loadCPU(int id) throws SQLException {
+		CPU c;
+		String query = "SELECT * FROM CPU JOIN Component ON CPU.IdComponent = Component.IdComponent WHERE CPU.IdComponent = '" + id + "'";
+		ResultSet rs=st.executeQuery(query);
+		if (rs.next()) {
+			String name = rs.getString("Name");
+			double price = rs.getBigDecimal("Price").doubleValue();
+			String brand = rs.getString("BrandName");
+			int frequency = rs.getInt("Frequency");
+			int cores = rs.getInt("Cores");
+			String socket = rs.getString("Socket");
+			int wattage = rs.getInt("Wattage");
+			c = new CPU(id, name, price, brand, frequency, cores, socket, wattage);
+		} else { 
+			throw(new SQLException());
+		}
+		return c;
 	}
 	
 	public ArrayList<Motherboards> loadMotherBoards() throws SQLException {
@@ -191,6 +216,33 @@ public class Connect {
 		return list;
 	}
 	
+	public Cases loadCase(int id) throws SQLException {
+		Cases c;
+		String query = "SELECT * FROM Case JOIN Component ON Case.IdComponent = Component.IdComponent WHERE Case.IdComponent = '" + id + "'";
+		ResultSet rs=st.executeQuery(query);
+		if (rs.next()) {
+			String name = rs.getString("Name");
+			double price = rs.getBigDecimal("Price").doubleValue();
+			String brand = rs.getString("BrandName");
+			String size = rs.getString("Size");
+			HashSet<String> motherboards = new HashSet<String>();
+			Statement st2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String query2 = "SELECT * FROM Case_supports_ff WHERE IdComponent = '" + id + "'";
+			ResultSet rs2=st2.executeQuery(query2);
+			while (rs2.next()) {
+				motherboards.add(rs2.getString("FormFactor"));
+			}
+			String psu_size = rs.getString("PsuSize");
+			int max_psu_length = rs.getInt("MaxPsuLength");
+			int max_gpu_length = rs.getInt("MaxGpuLength");
+			int max_cpu_fan_height = rs.getInt("MaxCpuFanHeight");
+			c = new Cases(id, name, price, brand, size, motherboards, psu_size, max_psu_length, max_gpu_length, max_cpu_fan_height);
+		} else { 
+			throw(new SQLException());
+		}
+		return c;
+	}
+	
 	public ArrayList<Storage> loadStorages() throws SQLException {
 		ArrayList<Storage> list=new ArrayList<Storage>();
 		Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -245,6 +297,27 @@ public class Connect {
 		return list;
 	}
 	
+	public CPU_Cooling loadCPU_cooler(int id) throws SQLException {
+		CPU_Cooling c;
+		String query = "SELECT * FROM CPU_cooling JOIN Component ON CPU_cooling.IdComponent = Component.IdComponent WHERE CPU_cooling.IdComponent = '" + id + "'";
+		ResultSet rs=st.executeQuery(query);
+		if (rs.next()) {
+			String name = rs.getString("Name");
+			double price = rs.getBigDecimal("Price").doubleValue();
+			String brand = rs.getString("BrandName");
+			String lighting = rs.getString("Lighting");
+			String type = rs.getString("Type");
+			int airflow = rs.getInt("Airflow");
+			String socket = rs.getString("Socket");
+			int height = rs.getInt("Height");
+			c = new CPU_Cooling(id, name, price, brand, lighting, type, airflow, socket, height);
+		} else { 
+			throw(new SQLException());
+		}
+		return c;
+	}
+	
+	
 	public String getSalt(String username) throws SQLException {
 		String query="SELECT * FROM User WHERE Username = '"+username+"'";
 		String s=null;
@@ -257,22 +330,63 @@ public class Connect {
 		return s;
 	}
 	
-	public boolean hasUser(String username, String password) {
-		String query="select count(*) as utenti from User where username ='"+username+"' and password = '"+password+"'";
-		int i=0;
-		try{
-			ResultSet rs=st.executeQuery(query);
-			rs.next();
-			i=rs.getInt(1);
-		}catch(SQLException e) {
-			return false;
-		}
-		if(i==1)
-			return true;
+	public ResultSet getUser(String username, String password) throws SQLException, SecurityException {
+		Statement st = writeConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		String query = "select * from User where username ='"+username+"' and password = '"+password+"'";
+		ResultSet rs = st.executeQuery(query);
+		if(rs.next()) {
+			return rs;
+		} 
 		else
-			return false;
+		{
+			throw(new SecurityException());
+		}
+	}
+	
+	
+	public ArrayList<Computer> getComputers(User u) throws SQLException {
+		ArrayList<Computer> computers = new ArrayList<Computer>();
+		Statement st = writeConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		String username = u.getUsername();
+		String query = "select * from Computer where username ='"+username+"'";
+		ResultSet rs = st.executeQuery(query);
+		if(rs.next()) {
+			int id = rs.getInt("IdComputer");
+			ResultSet computerComponents = getComputerComponentResultSet(id);
+			String name = rs.getString("Name");
+			computers.add(new Computer(id, name, computerComponents));
+		} 
+		return computers;
+	}
+	
+	/*
+	 * This method returns a ResultSet containing all the IdComponents
+	 * and Categories corresponding to a certain computer. The ResultSet
+	 * is updatable.
+	 * @param id The IdComputer of the computer
+	 * */
+	public ResultSet getComputerComponentResultSet(int id) throws SQLException {
+		Statement st = writeConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+		String query = "select * from Made_of where IdComputer = '"+id+"'";
+		ResultSet rs = st.executeQuery(query);
+		return rs;
 	}
 
+	public Computer createComputer(String name, User u) throws SQLException{
+		String username = u.getUsername();
+		String query = "INSERT INTO Computer(Name, Username) VALUES ('"+name+"', '"+username+"')";
+		st.executeUpdate(query);
+		query = "SELECT IdComputer FROM Computer WHERE Name = '"+name+"' and Username = '"+username+"'";
+		ResultSet rs = st.executeQuery(query);
+		if(rs.next()) {
+			int id = rs.getInt("IdComputer");
+			ResultSet computerComponents = getComputerComponentResultSet(id); 
+			return new Computer(id, name, computerComponents);
+		} else {
+			throw(new SQLException());
+		}
+	}
+	
 	public boolean insertUser(String username, String password, String salt, String question, String answer) {
 		String query="INSERT INTO User(Username, Password, Salt, Privileges, secretQuestion, secretAnswer) Values ('"+username+"', '"+password+"', '"+salt+"', '0', '"+question+"', '"+answer+"')";
 		try {

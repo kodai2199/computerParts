@@ -24,6 +24,7 @@ public class ComputerPartsApp extends Application {
 	private static final String HOME_FXML = "fxml/home.fxml";
 	private static final String SIGNUP_FXML = "fxml/signup.fxml";
 	private static final String CATEGORYLIST_FXML = "fxml/categorylist.fxml";
+	private static final String BUILDLIST_FXML = "fxml/buildlist.fxml";
 	
 	// This is used to keep track of who did the login
 	private static User user;
@@ -61,11 +62,12 @@ public class ComputerPartsApp extends Application {
 	 * */
 	public void start(Stage stage) {
 		loadComponentsLists();
-	
+
 		scenes.put(SceneName.LOGIN, new FxmlData(LOGIN_FXML, SceneName.LOGIN, stage));
 		scenes.put(SceneName.HOME, new FxmlData(HOME_FXML, SceneName.HOME, stage));
 		scenes.put(SceneName.SIGNUP, new FxmlData(SIGNUP_FXML, SceneName.SIGNUP, stage));
 		scenes.put(SceneName.CATEGORYLIST, new FxmlData(CATEGORYLIST_FXML, SceneName.CATEGORYLIST, stage));
+		scenes.put(SceneName.BUILDLIST, new FxmlData(BUILDLIST_FXML, SceneName.BUILDLIST, stage));
 		
 		stage.setScene(scenes.get(SceneName.LOGIN).getScene());
 		stage.setTitle("Build your computer");
@@ -84,6 +86,7 @@ public class ComputerPartsApp extends Application {
 		// For every component, load the logo
 		try {
 			Connect db = new Connect();
+			
 			cpus = db.loadCPUs();
 			for (CPU c:cpus) {
 				loadBrandLogos(c.getBrand());

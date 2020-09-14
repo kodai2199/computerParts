@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import main.java.db.Connect;
 import java.security.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.nio.charset.StandardCharsets;
 
@@ -11,31 +12,34 @@ public class User {
 	private String username;
 	private String password;
 	private Boolean loggedin = false;
-	private ArrayList<Computer> build;
+	private ArrayList<Computer> computers;
+	private ResultSet UserData;
 	private String salt;
 	private String secretQuestion;
 	private String secretAnswer;
 	
 	public User(String username, String password) throws SecurityException {
 		this.username = username;
-		
-		// Login
-		// 1. Establish a connection with the DB
-		// 2. Get the salt for this username (if it exists)
-		// 3. Hash the password with the given salt
-		// 4. Check if a user with that hashed password and username exists
-		// Login complete
-		
 		try {
+			/* === Login ===
+			 * 1. Establish a connection with the DB
+			 * 2. Get the salt for this username (if it exists)
+			 * 3. Hash the password with the given salt
+			 * 4. Get the user with the corresponding data
+			 * If the provided username or password is wrong
+			 * then a SecurityException is thrown	
+			 * 5. Login complete
+			 */
 			Connect db = new Connect();
 			String salt = db.getSalt(username);
 			this.password = hash(password, salt);
-			if (!db.hasUser(username, this.password) || salt.equals("Salt not found")) {
-				throw(new SecurityException());
-			}
+			UserData = db.getUser(username, this.password);		
 			this.loggedin = true;
 			this.salt = salt;
-			this.build=new ArrayList<Computer>();
+			secretQuestion = UserData.getString("secretQuestion");
+			secretAnswer = UserData.getString("secretAnswer");
+			// Load the user's computers
+			loadComputers();
 		}
 		catch (SQLException e)
 		{
@@ -46,8 +50,10 @@ public class User {
 		}
 	}
 	
+	/*
+	 * Try to create a new user with the provided data. 
+	 * */
 	public static boolean create(String username, String password, String secretQuestion, String secretAnswer) {
-		//Generate a new User
 		String salt = generateSalt();
 		password = hash(password, salt);
 		String tmp = secretAnswer.toUpperCase();
@@ -55,16 +61,7 @@ public class User {
 		boolean r = false;
 		
 		try {
-			// 	Try to insert into the database
 			Connect db = new Connect();
-			/* Just for logging and debugging purposes
-			System.out.println("AFTER HASH");
-			System.out.println("Nome utente: "+username);
-			System.out.println("Password: "+password);
-			System.out.println("Salt: "+salt);
-			System.out.println("Domanda segreta: "+secretQuestion);
-			System.out.println("Risposta: "+secretAnswer);
-			*/ 
 			r = db.insertUser(username, password, salt, secretQuestion, secretAnswer);
 		}
 		catch (SQLException e)
@@ -77,7 +74,8 @@ public class User {
 		return r;
 	}
 	
-	private static String hash(String passwordToHash, String salt) {														//Hash code for the password cryptography.
+	//Hash code for the password cryptography.
+	private static String hash(String passwordToHash, String salt) {
 		String generatedPassword = null;
 	    try {
 	        MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -94,6 +92,14 @@ public class User {
 	    return generatedPassword;
 	}
 	
+	/*
+	 * Generate a random 32 characters long string.
+	 * The string (salt) will be use to make every
+	 * password look different even if they are the same.
+	 * In this case, in the event of a DB leak, a lot of
+	 * additional time will be required to discover and
+	 * decipher all the passwords.
+	 * */
 	private static String generateSalt() {
 		String salt = "";
 		Random r=new Random();
@@ -104,20 +110,39 @@ public class User {
 		return salt;
 	}
 	
-	public String getUsername() {																					//Getter method for the username.
-		return username;
+	/*
+	 * Loads the builds' list for the current user
+	 * */
+	public boolean loadComputers() throws ClassNotFoundException, SQLException {
+		if (!loggedin) {
+			return false;
+		} else {
+			Connect db = new Connect();
+			computers = db.getComputers(this);
+			return true;
+		}
 	}
 	
-	public void addComputer(String cname) throws IOException {														//Add method for Computer. Throws IOException.
-		if(checkComputer(cname)==null) {
-			Computer c=new Computer(cname);
-			build.add(c);
+	
+	// Try to create a new build;
+	public void createComputer(String name) throws IOException {														
+		if(checkComputer(name)==null) {
+			Connect db;
+			try {
+				db = new Connect();
+				computers.add(db.createComputer(name, this));
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}	
 		else
 			throw (new IOException());
 	}
 	
-	public Computer getComputer(String cname) throws FileNotFoundException {										//Getter method for Computer. Check if the computer exists by the name and return the computer himself. If the computer doesn't exist, throws FileNotFoundException.
+	// Check if the computer exists by the name and return the computer himself. If the computer doesn't exist, throws FileNotFoundException.
+	public Computer getComputer(String cname) throws FileNotFoundException {										
 		Computer c=checkComputer(cname);
 		if(c==null)
 			throw (new FileNotFoundException());
@@ -125,8 +150,10 @@ public class User {
 			return c;
 	}
 	
-	private Computer checkComputer(String cname) {																	//Check method. If the computer exists return true, else return false.
-		for(Computer c: build) {
+	
+	//Check method. If the computer exists return true, else return false.
+	private Computer checkComputer(String cname) {																	
+		for(Computer c: computers) {
 			if(c.getName().equals(cname)) {
 				return c;
 			}
@@ -134,7 +161,18 @@ public class User {
 		return null;
 	}
 	
-	public void changeComputerName(String currentName, String newName)throws IOException, FileNotFoundException {	//Change the name of a specific computer. If the check method return true, check if exists another computer with the new name. Throws FileNotFoundException if the file doesn't exist, throws IOException if exists another computer with the same name.
+	public ArrayList<Computer> getComputers() {
+		return computers;
+	}
+	
+	
+	/* TODO (not working on the db)
+	 * Change the name of a specific computer. If the check method return true,
+	 * check if exists another computer with the new name. Throws FileNotFoundException
+	 * if the file doesn't exist, throws IOException if exists another computer with
+	 *  the same name
+	 */
+	public void changeComputerName(String currentName, String newName)throws IOException, FileNotFoundException {	
 		if(currentName.equals(newName))
 			return;
 		Computer c=checkComputer(currentName);
@@ -143,22 +181,27 @@ public class User {
 		else {
 			Computer tmp=checkComputer(newName);
 			if(tmp==null) {
-				int index=build.indexOf(c);
-				build.get(index).rename(newName);
+				int index=computers.indexOf(c);
+				computers.get(index).rename(newName);
 			}
 			else
 				throw(new IOException());
 		}
 	}
 	
-	public boolean checkPassword(String password) throws SecurityException {										//Check if the insert password is correct. If it is wrong, throws SecurityException.
+	/* TODO implement Username and password change
+	public void changeUsername(String newUsername) {
+		this.username=newUsername;
+	}
+	
+	public boolean checkPassword(String password) throws SecurityException {
 		if(hash(password,this.salt).equals(this.password)) 
 			return true;
 		else
 			throw (new SecurityException());
 	}
 	
-	public boolean changePassword(String answer, String newPassword) throws SecurityException {						//Change the password only if the answer is correct.						
+	public boolean changePassword(String answer, String newPassword) throws SecurityException {					
 		if(hash(answer.toUpperCase(),this.salt).equals(secretAnswer)) {
 			this.password=hash(newPassword,this.salt);
 			return true;
@@ -166,13 +209,14 @@ public class User {
 		else
 			throw (new SecurityException());
 	}
+	*/
 	
-	public String getQuestion() {																					//Getter method for secretQuestion.
-		return this.secretQuestion;
+	public String getUsername() {
+		return username;
 	}
 	
-	public void changeUsername(String newUsername) {																//Change the username of the user.
-		this.username=newUsername;
+	public String getQuestion() {
+		return this.secretQuestion;
 	}
 	
 	public boolean isLoggedin() {

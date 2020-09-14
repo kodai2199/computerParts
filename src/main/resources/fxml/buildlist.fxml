@@ -8,12 +8,11 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" minHeight="800.0" minWidth="1000.0" scaleShape="false" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.BuildListController">
    <children>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="60.0" stylesheets="@app.css">
+      <HBox fx:id="menu" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="60.0" stylesheets="@app.css">
          <children>
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
@@ -32,7 +31,7 @@
                   <Tooltip text="Show the list of builds created in the past" />
                </tooltip>
             </Button>
-            <Button fx:id="savedbuilds" mnemonicParsing="false" styleClass="std-button" text="Saved Builds">
+            <Button fx:id="savedbuilds" mnemonicParsing="false" onAction="#openBuildList" styleClass="std-button" text="Saved Builds">
                <tooltip>
                   <Tooltip text="Show the list of builds created in the past" />
                </tooltip>
@@ -52,11 +51,10 @@
       </HBox>
       <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="bg1" stylesheets="@app.css" VBox.vgrow="ALWAYS">
          <content>
-            <TilePane fx:id="buildlist_tilepane" alignment="TOP_CENTER" hgap="50.0" prefColumns="3" prefHeight="200.0" prefWidth="200.0" styleClass="bg2" stylesheets="@app.css" vgap="20.0">
+            <VBox fx:id="buildlist_vbox" prefHeight="200.0" prefWidth="100.0" spacing="20.0" styleClass="bg2" stylesheets="@app.css">
                <padding>
-                  <Insets top="20.0" />
-               </padding>
-            </TilePane>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding></VBox>
          </content>
       </ScrollPane>
    </children>
