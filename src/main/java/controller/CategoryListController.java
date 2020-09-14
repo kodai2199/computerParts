@@ -1,6 +1,8 @@
 package main.java.controller;
 
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -16,6 +18,7 @@ public class CategoryListController extends StdMenuBarController {
 	
 	@FXML
 	private TilePane categorylist_tilepane;
+	private NumberFormat nf = new DecimalFormat("#0.00");
 	
 	public void initialize() {
         FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST);
@@ -67,7 +70,7 @@ public class CategoryListController extends StdMenuBarController {
 			Label socket = new Label("Socket "+c.getSocket());
 			Label cores = new Label(c.getCores() + " Cores");
 			Label frequency = new Label((double)c.getFrequency()/1000d + "GHz");
-			Label price = new Label(c.getPrice()+ "€");
+			Label price = new Label(nf.format(c.getPrice())+ "€");
 			Label tdp = new Label(c.getWattage()+ "W TDP");
 			VBox box = new VBox(i, name, socket, cores, frequency, price, tdp);
 			box.getStyleClass().add("category-box");
@@ -87,7 +90,7 @@ public class CategoryListController extends StdMenuBarController {
 			Label core_frequency = new Label("Core frequency: " + g.getCore_frequency() + "MHz");
 			Label memory_frequency = new Label("Memory frequency: " + g.getMemory_frequency() + "MHz");
 			Label multi_gpu = new Label("Multi GPU support: " + g.getMulti_GPU());
-			Label price = new Label(g.getPrice()+ "€");
+			Label price = new Label(nf.format(g.getPrice())+ "€");
 			Label tdp = new Label(g.getWattage()+ "W TDP");
 			VBox box = new VBox(i, name, core_frequency, memory_frequency, multi_gpu, price, tdp);
 			box.getStyleClass().add("category-box");
@@ -108,7 +111,7 @@ public class CategoryListController extends StdMenuBarController {
 			Label capacity = new Label("Capacity: " + m.getSize() + "GB");
 			Label frequency = new Label(m.getFrequency() + "MHz");
 			Label lighting = new Label("Lighting: " + m.getLighting());
-			Label price = new Label(m.getPrice()+ "€");
+			Label price = new Label(nf.format(m.getPrice())+ "€");
 			VBox box = new VBox(i, name, type, capacity, frequency, lighting, price);
 			box.getStyleClass().add("category-box");
 			this.categorylist_tilepane.getChildren().add(box);
@@ -134,7 +137,7 @@ public class CategoryListController extends StdMenuBarController {
 			Label m_2 = new Label( m.getMax_M_2() + " M.2 slots");
 			Label multi_gpu = new Label("Multi GPU: " + m.getMulti_GPU());
 			Label lighting = new Label("Lighting: " + m.getLighting());
-			Label price = new Label(m.getPrice()+ "€");
+			Label price = new Label(nf.format(m.getPrice())+ "€");
 			VBox box = new VBox(i, name, socket, chipset, ff, memory_slots, memory_type, memory_speed, memory_capacity, m_2, multi_gpu, lighting,  price);
 			box.getStyleClass().add("category-box");
 			this.categorylist_tilepane.getChildren().add(box);
@@ -154,7 +157,7 @@ public class CategoryListController extends StdMenuBarController {
 			Label type = new Label(p.getType());
 			Label length = new Label("Length: " + p.getLength() + "mm");
 			Label ff = new Label(p.getSize() + " Form factor");
-			Label price = new Label(p.getPrice()+ "€");
+			Label price = new Label(nf.format(p.getPrice())+ "€");
 			VBox box = new VBox(i, name, wattage, type, length, ff, price);
 			box.getStyleClass().add("category-box");
 			this.categorylist_tilepane.getChildren().add(box);
@@ -173,7 +176,7 @@ public class CategoryListController extends StdMenuBarController {
 			Label capacity = new Label(s.getSize() + "GB");
 			Label type = new Label("Storage type: " + s.getType());
 			Label speed = new Label(s.getTransfer_speed() + "MB/s Peak transfer speed");
-			Label price = new Label(s.getPrice()+ "€");
+			Label price = new Label(nf.format(s.getPrice())+ "€");
 			VBox box;
 			if (!s.getType().equals("M.2")) {
 				Label format = new Label(s.getFormat() + "\" drive");

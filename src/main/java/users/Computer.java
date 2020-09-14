@@ -43,7 +43,6 @@ public class Computer {
 		this.computerComponents = computerComponents;
 		loadComponents();
 	}
-
 	
 	/*
 	 * Tries to load from the database all the components in this build,
@@ -70,14 +69,23 @@ public class Computer {
 						computer.add(cpu);
 						break;
 					case "Graphics_card":
+						gpu = db.loadGPU(idComponent);
+						computer.add(gpu);
 						break;
 					case "Memory":
+						ram = db.loadMemory(idComponent);
+						computer.add(ram);
 						break;
 					case "Motherboard":
+						motherboard = db.loadMotherboard(idComponent);
+						computer.add(motherboard);
 						break;
 					case "Power_supply":
+						psu = db.loadPowerSupply(idComponent);
+						computer.add(psu);
 						break;
 					case "Storage":
+						computer.add(db.loadStorage(idComponent));
 						break;
 				}
 			}
@@ -481,8 +489,12 @@ public class Computer {
 		return m;
 	}
 	
+	public int getId() {
+		return id;
+	}
+	
  	public String getName() {														//Get the computer's name.
-		return this.name;
+		return name;
 	}
 	
 	public Cases getCase() {

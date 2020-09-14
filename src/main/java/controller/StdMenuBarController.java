@@ -49,5 +49,17 @@ public class StdMenuBarController extends GenericController {
         fxml.setLastSceneName(sceneName);
         stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDLIST).getScene());
 	}
+	
+	public void openBuildPage() {
+		FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE);
+        fxml.setLastSceneName(sceneName);
+        stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE).getScene());
+	}
+	
+	public void openHome() {
+		FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.HOME);
+        fxml.setLastSceneName(sceneName);
+        stage.setScene(ComputerPartsApp.getScenes().get(SceneName.HOME).getScene());
+	}
 
 }

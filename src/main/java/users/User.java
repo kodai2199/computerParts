@@ -123,10 +123,9 @@ public class User {
 		}
 	}
 	
-	
 	// Try to create a new build;
 	public void createComputer(String name) throws IOException {														
-		if(checkComputer(name)==null) {
+		if(!hasComputer(name)) {
 			Connect db;
 			try {
 				db = new Connect();
@@ -141,30 +140,56 @@ public class User {
 			throw (new IOException());
 	}
 	
-	// Check if the computer exists by the name and return the computer himself. If the computer doesn't exist, throws FileNotFoundException.
-	public Computer getComputer(String cname) throws FileNotFoundException {										
-		Computer c=checkComputer(cname);
-		if(c==null)
-			throw (new FileNotFoundException());
-		else
-			return c;
-	}
-	
-	
-	//Check method. If the computer exists return true, else return false.
-	private Computer checkComputer(String cname) {																	
-		for(Computer c: computers) {
-			if(c.getName().equals(cname)) {
-				return c;
+	public void deleteComputer(int id) {
+		if (!loggedin)
+			return;
+		if (hasComputer(id)) {
+			Connect db;
+			try {
+				db = new Connect();
+				db.removeComputer(id, this);
+				loadComputers();
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
 			}
 		}
+	}
+	
+	// Check if the computer exists by the name and return the computer himself. If the computer doesn't exist, throws FileNotFoundException.
+	public Computer getComputer(String cname) throws FileNotFoundException {										
+		if(!hasComputer(cname))
+			throw (new FileNotFoundException());
+		else
+			for(Computer c: computers) {
+				if(c.getName().equals(cname)) {
+					return c;
+				}
+			}
 		return null;
+	}
+	
+	//Check method. If the computer exists return true, else return false.
+	public boolean hasComputer(String cname) {																	
+		for(Computer c: computers) {
+			if(c.getName().equals(cname)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean hasComputer(int id) {																	
+		for(Computer c: computers) {
+			if(c.getId() == id) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public ArrayList<Computer> getComputers() {
 		return computers;
 	}
-	
 	
 	/* TODO (not working on the db)
 	 * Change the name of a specific computer. If the check method return true,
@@ -172,22 +197,6 @@ public class User {
 	 * if the file doesn't exist, throws IOException if exists another computer with
 	 *  the same name
 	 */
-	public void changeComputerName(String currentName, String newName)throws IOException, FileNotFoundException {	
-		if(currentName.equals(newName))
-			return;
-		Computer c=checkComputer(currentName);
-		if(c==null)
-			throw (new FileNotFoundException());
-		else {
-			Computer tmp=checkComputer(newName);
-			if(tmp==null) {
-				int index=computers.indexOf(c);
-				computers.get(index).rename(newName);
-			}
-			else
-				throw(new IOException());
-		}
-	}
 	
 	/* TODO implement Username and password change
 	public void changeUsername(String newUsername) {

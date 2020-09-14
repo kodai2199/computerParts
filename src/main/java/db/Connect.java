@@ -107,6 +107,31 @@ public class Connect {
 		return list;
 	}
 	
+	public Motherboards loadMotherboard(int id) throws SQLException {
+		Motherboards m;
+		String query = "SELECT * FROM CPU JOIN Component ON CPU.IdComponent = Component.IdComponent WHERE CPU.IdComponent = '" + id + "'";
+		ResultSet rs=st.executeQuery(query);
+		if (rs.next()) {
+			String name = rs.getString("Name");
+			double price = rs.getBigDecimal("Price").doubleValue();
+			String brand = rs.getString("BrandName");
+			String lighting = rs.getString("Lighting");
+			String chipset = rs.getString("Chipset");
+			String socket = rs.getString("Socket");
+			String ram_type = rs.getString("RamType");
+			int ram_slots = rs.getInt("RamSlots");
+			String size = rs.getString("Size");
+			int ram_speed = rs.getInt("RamSpeed");
+			String multi_GPU = rs.getString("MultiGPU");
+			int max_memory = rs.getInt("MaxMemory");
+			int max_M_2 = rs.getInt("MaxM2");
+			m = new Motherboards(id, name, price, brand, lighting, chipset, socket, ram_type, ram_slots, size, ram_speed, multi_GPU, max_memory, max_M_2);
+		} else { 
+			throw(new SQLException());
+		}
+		return m;
+	}
+	
 	public ArrayList<Memory> loadRAMs() throws SQLException {
 		ArrayList<Memory> list=new ArrayList<Memory>();
 		Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -135,6 +160,25 @@ public class Connect {
 		return list;
 	}
 	
+	public Memory loadMemory(int id) throws SQLException {
+		Memory m;
+		String query = "SELECT * FROM Memory JOIN Component ON Memory.IdComponent = Component.IdComponent WHERE Memory.IdComponent = '" + id + "'";
+		ResultSet rs=st.executeQuery(query);
+		if (rs.next()) {
+			String name = rs.getString("Name");
+			double price = rs.getBigDecimal("Price").doubleValue();
+			String brand = rs.getString("BrandName");
+			String ram_type = rs.getString("Type");
+			int frequency = rs.getInt("Frequency");
+			String lighting = rs.getString("Lighting");
+			int size = rs.getInt("Size");
+			m = new Memory(id, name, price, brand, ram_type, frequency, lighting, size);
+		} else { 
+			throw(new SQLException());
+		}
+		return m;
+	}
+	
 	public ArrayList<Power_supplies> loadPowerSupplies() throws SQLException{
 		ArrayList<Power_supplies> list=new ArrayList<Power_supplies>();
 		Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -158,6 +202,25 @@ public class Connect {
 		}
 		statement1.close();
 		return list;
+	}
+	
+	public Power_supplies loadPowerSupply(int id) throws SQLException {
+		Power_supplies p;
+		String query = "SELECT * FROM Memory JOIN Component ON Memory.IdComponent = Component.IdComponent WHERE Memory.IdComponent = '" + id + "'";
+		ResultSet rs=st.executeQuery(query);
+		if (rs.next()) {
+			String name = rs.getString("Name");
+			double price = rs.getBigDecimal("Price").doubleValue();
+			String brand = rs.getString("BrandName");
+			int wattage = rs.getInt("Wattage");
+			int length = rs.getInt("Length");
+			String type = rs.getString("Type");
+			String size = rs.getString("Size");
+			p = new Power_supplies(id, name, price, brand, wattage, length, type, size);
+		} else { 
+			throw(new SQLException());
+		}
+		return p;
 	}
 	
 	public ArrayList<Graphic_Cards> loadGPUs() throws SQLException {
@@ -187,6 +250,29 @@ public class Connect {
 		}
 		statement1.close();
 		return list;
+	}
+	
+	public Graphic_Cards loadGPU(int id) throws SQLException {
+		Graphic_Cards g;
+		String query = "SELECT * FROM Graphics_card JOIN Component ON Graphics_card.IdComponent = Component.IdComponent WHERE Graphics_card.IdComponent = '" + id + "'";
+		ResultSet rs=st.executeQuery(query);
+		if (rs.next()) {
+			String name = rs.getString("Name");
+			double price = rs.getBigDecimal("Price").doubleValue();
+			String brand = rs.getString("BrandName");
+			String lighting = rs.getString("Lighting");
+			int vram = rs.getInt("VRAM");
+			int core_frequency = rs.getInt("CoreFrequency");
+			int memory_frequency = rs.getInt("MemoryFrequency");
+			int length = rs.getInt("Length");
+			int wattage = rs.getInt("Wattage");
+			String multi_GPU = rs.getString("MultiGPU");
+			String type = rs.getString("Type");
+			g = new Graphic_Cards(id, name, price, brand, lighting, vram, core_frequency, memory_frequency, length, wattage, multi_GPU, type);
+		} else { 
+			throw(new SQLException());
+		}
+		return g;
 	}
 	
 	public ArrayList<Cases> loadCases() throws SQLException {
@@ -271,6 +357,25 @@ public class Connect {
 		return list;
 	}
 	
+	public Storage loadStorage(int id) throws SQLException {
+		Storage s;
+		String query = "SELECT * FROM Graphics_card JOIN Component ON Graphics_card.IdComponent = Component.IdComponent WHERE Graphics_card.IdComponent = '" + id + "'";
+		ResultSet rs=st.executeQuery(query);
+		if (rs.next()) {
+			String name = rs.getString("Name");
+			double price = rs.getBigDecimal("Price").doubleValue();
+			String brand = rs.getString("BrandName");
+			String type = rs.getString("Type");
+			double format = rs.getBigDecimal("Format").doubleValue();
+			int size = rs.getInt("Size");
+			int transfer_speed = rs.getInt("TransferSpeed");
+			s = new Storage(id, name, price, brand, type, format, size, transfer_speed);
+		} else { 
+			throw(new SQLException());
+		}
+		return s;
+	}
+	
 	public ArrayList<CPU_Cooling> loadCPU_coolers() throws SQLException {
 		ArrayList<CPU_Cooling> list=new ArrayList<CPU_Cooling>();
 		Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -350,13 +455,25 @@ public class Connect {
 		String username = u.getUsername();
 		String query = "select * from Computer where username ='"+username+"'";
 		ResultSet rs = st.executeQuery(query);
-		if(rs.next()) {
+		while(rs.next()) {
 			int id = rs.getInt("IdComputer");
 			ResultSet computerComponents = getComputerComponentResultSet(id);
 			String name = rs.getString("Name");
 			computers.add(new Computer(id, name, computerComponents));
 		} 
 		return computers;
+	}
+	
+	public boolean removeComputer(int id, User u) {
+		String username = u.getUsername();
+		String query = "DELETE FROM Computer WHERE IdComputer = '" + id + "' AND Username = '" + username + "'";
+		try {
+			Statement st = writeConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			st.executeUpdate(query);
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	/*

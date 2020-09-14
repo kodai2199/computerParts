@@ -25,6 +25,7 @@ public class ComputerPartsApp extends Application {
 	private static final String SIGNUP_FXML = "fxml/signup.fxml";
 	private static final String CATEGORYLIST_FXML = "fxml/categorylist.fxml";
 	private static final String BUILDLIST_FXML = "fxml/buildlist.fxml";
+	private static final String BUILDPAGE_FXML = "fxml/buildpage.fxml";
 	
 	// This is used to keep track of who did the login
 	private static User user;
@@ -68,7 +69,11 @@ public class ComputerPartsApp extends Application {
 		scenes.put(SceneName.SIGNUP, new FxmlData(SIGNUP_FXML, SceneName.SIGNUP, stage));
 		scenes.put(SceneName.CATEGORYLIST, new FxmlData(CATEGORYLIST_FXML, SceneName.CATEGORYLIST, stage));
 		scenes.put(SceneName.BUILDLIST, new FxmlData(BUILDLIST_FXML, SceneName.BUILDLIST, stage));
+		scenes.put(SceneName.BUILDPAGE, new FxmlData(BUILDPAGE_FXML, SceneName.BUILDPAGE, stage));
 		
+		InputStream res = CategoryListController.class.getClassLoader().getResourceAsStream("icons/Store.png");
+		Image cpLogo = new Image(res);
+		stage.getIcons().add(cpLogo);
 		stage.setScene(scenes.get(SceneName.LOGIN).getScene());
 		stage.setTitle("Build your computer");
 		stage.show();

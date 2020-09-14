@@ -3,16 +3,20 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" minHeight="800.0" minWidth="1000.0" scaleShape="false" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.CategoryListController">
+<VBox alignment="CENTER" minHeight="800.0" minWidth="1000.0" scaleShape="false" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.BuildPageController">
    <children>
       <HBox fx:id="menu" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="60.0" stylesheets="@app.css">
          <children>
@@ -39,7 +43,8 @@
             <Button fx:id="savedbuilds" mnemonicParsing="false" onAction="#openBuildList" styleClass="std-button" text="Saved Builds">
                <tooltip>
                   <Tooltip text="Show the list of builds created in the past" />
-               </tooltip></Button>
+               </tooltip>
+            </Button>
             <Button fx:id="newbuild" mnemonicParsing="false" onAction="#openBuildPage" styleClass="std-button" text="New Build" />
             <Button fx:id="profile" mnemonicParsing="false" styleClass="std-button" stylesheets="@app.css" text="Your profile" />
          </children>
@@ -55,11 +60,40 @@
       </HBox>
       <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="bg1" stylesheets="@app.css" VBox.vgrow="ALWAYS">
          <content>
-            <TilePane fx:id="categorylist_tilepane" alignment="TOP_CENTER" hgap="50.0" prefColumns="3" prefHeight="200.0" prefWidth="200.0" styleClass="bg2" stylesheets="@app.css" vgap="20.0">
+            <VBox fx:id="buildpage_vbox" prefHeight="200.0" prefWidth="100.0" spacing="20.0" styleClass="bg2" stylesheets="@app.css">
                <padding>
-                  <Insets top="20.0" />
+                  <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
                </padding>
-            </TilePane>
-         </content></ScrollPane>
+               <children>
+                  <BorderPane prefHeight="100.0">
+                     <bottom>
+                        <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </bottom>
+                     <center>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TextField promptText="Enter the build name" styleClass="std-textfield">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </TextField>
+                              <Button mnemonicParsing="false" styleClass="std-button" text="Save build" />
+                              <Separator orientation="VERTICAL" prefHeight="200.0" />
+                              <Label alignment="CENTER" text="Grand total: 0,00€" textFill="WHITE" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </center>
+                     <right>
+                        <Pane prefHeight="100.0" prefWidth="50.0" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
    </children>
 </VBox>
