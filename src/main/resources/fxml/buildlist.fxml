@@ -17,7 +17,7 @@
          <children>
             <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                <children>
-                  <ImageView fitHeight="90.0" fitWidth="90.0" onMouseClicked="#returnHome" preserveRatio="true" x="10.0" y="10.0">
+                  <ImageView fitHeight="90.0" fitWidth="90.0" onMouseClicked="#openHome" preserveRatio="true" x="10.0" y="10.0">
                      <image>
                         <Image url="@../icons/Store.png" />
                      </image>

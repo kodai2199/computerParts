@@ -5,7 +5,7 @@ public class Case_fan extends Component {
 	private String type;
 	private int airflow;
 	private int size;
-	protected static final String printable_name = "Case fans";
+	protected static final String category_name = "Case_fan";
 	
 	public Case_fan(int id, String name, double price, String brand, String lighting, String type, int airflow, int size) {
 		super(id, name, price, brand);
@@ -31,4 +31,7 @@ public class Case_fan extends Component {
 		return size;
 	}
 	
+	public String getCategory() {
+		 return category_name;
+	}	
 }

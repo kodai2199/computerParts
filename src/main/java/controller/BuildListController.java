@@ -70,6 +70,15 @@ public class BuildListController extends StdMenuBarController {
 			AnchorPane.setBottomAnchor(deleteButton, 20.0);
 			box.getChildren().addAll(data, deleteButton);
 			box.getStyleClass().add("category-box");
+			EventHandler<MouseEvent> buildPageHandler = new EventHandler<MouseEvent>() {
+			    @Override
+			    public void handle(MouseEvent event) {
+			        // Open the Build page
+			    	openBuild(c.getId());
+			        event.consume();
+			    }
+			};
+			box.setOnMouseClicked(buildPageHandler);
 			this.buildlist_vbox.getChildren().add(box);
 		}
         FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.BUILDLIST);
@@ -81,4 +90,11 @@ public class BuildListController extends StdMenuBarController {
 		stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDLIST).getScene());
 	}
 
+	
+	private void openBuild(int id) {
+        FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE);
+        fxml.setOption("IdComputer", ""+id);
+        fxml.setLastSceneName(sceneName);
+        stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE).getScene());
+	}
 }

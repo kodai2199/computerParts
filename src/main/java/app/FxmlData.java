@@ -27,7 +27,7 @@ public class FxmlData {
 	 * as scene. Controller B will then be able to read the options
 	 * that were set from Controller A.
 	 * */
-	private static Map<String, String> options = new HashMap<>();
+	private static Map<String, String> options = new HashMap<String, String>();
 	private SceneName lastSceneName;
 	
 	/**
@@ -84,12 +84,20 @@ public class FxmlData {
 		}
 	}
 
+	public boolean isOptionSet(String key) {
+		return options.containsKey(key);
+	}
+	
 	public Map<String, String> getOptions() {
 		return options;
 	}
 
 	public void setOption(String key, String value) {
 		options.put(key, value);
+	}
+	
+	public void resetOptions() {
+		options = new HashMap<String, String>();
 	}
 	
 	public void consumeOption(String key) {
@@ -103,4 +111,5 @@ public class FxmlData {
 	public void setLastSceneName(SceneName sceneName) {
 		lastSceneName = sceneName;
 	}
+
 }

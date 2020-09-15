@@ -56,7 +56,6 @@ public class HomeController extends StdMenuBarController {
 		// Run the Menu Bar Controller
 		FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.HOME);
 		super.initalize(fxml);
-		System.out.println("Initialized Home Controller");
 	}
 	
 	public void openCategoryList(String category) {
@@ -68,7 +67,7 @@ public class HomeController extends StdMenuBarController {
 		 * */
         FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST);
         fxml.setOption("Category", category);
-        fxml.setLastSceneName(SceneName.HOME);
+        fxml.setLastSceneName(sceneName);
         stage.setScene(ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST).getScene());
 	}
 	

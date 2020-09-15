@@ -23,7 +23,7 @@ public class LoginController extends GenericController {
 	private Label login_error_msg;
 	
 	public void initialize(){
-		System.out.println("Initialized LoginController");
+		
 	}
 	
 	@FXML

@@ -5,7 +5,7 @@ public class Power_supplies extends Component {
 	private int length;
 	private String type;		//Modular or other
 	private String size;		//ATX or other
-	protected static final String printable_name = "Power supplies";
+	protected static final String category_name = "Power_supplies";
 	
 	public Power_supplies(int id, String name, double price, String brand, int wattage, int length, String type, String size) {
 		super(id, name, price, brand);
@@ -31,5 +31,8 @@ public class Power_supplies extends Component {
 		return size;
 	}
 
+	public String getCategory() {
+		 return category_name;
+	}
 	
 }

@@ -1,7 +1,5 @@
 package main.java.controller;
 
-import java.io.FileNotFoundException;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;

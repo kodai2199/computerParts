@@ -11,7 +11,7 @@ public class Motherboards extends Component {
 	private String multi_GPU;
 	private int max_memory;
 	private int max_M_2;
-	protected static final String printable_name = "Motherboards";
+	protected static final String category_name = "Motherboards";
 	
 	public Motherboards(int id, String name, double price, String brand, String lighting, String chipset, String socket, String ram_type, int ram_slots, String size,
 			int ram_speed, String multi_GPU,int max_memory, int max_M_2) {
@@ -61,4 +61,7 @@ public class Motherboards extends Component {
 		return max_memory;
 	}
 	
+	public String getCategory() {
+		 return category_name;
+	}	
 }

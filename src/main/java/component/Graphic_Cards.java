@@ -9,7 +9,7 @@ public class Graphic_Cards extends Component {
 	private int wattage;
 	private String multi_GPU;				//SLI or other
 	private String type;					//GTX 1080, etc...
-	protected static final String printable_name = "Graphic cards";
+	protected static final String category_name = "Graphic_Cards";
 	
 	public Graphic_Cards(int id, String name, double price, String brand, String lighting, int vram, int core_frequency,
 			int memory_frequency, int length, int wattage, String multi_GPU,String type) {
@@ -56,4 +56,7 @@ public class Graphic_Cards extends Component {
 		return type;
 	}
 
+	public String getCategory() {
+		 return category_name;
+	}	
 }

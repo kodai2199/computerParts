@@ -44,6 +44,7 @@ public class ComputerPartsApp extends Application {
 	 * If in-app reloading will be required, it may be done
 	 * with and additional thread.
 	 * */
+	private static ArrayList<CPU_Cooling> cpu_coolers;
 	private static ArrayList<CPU> cpus;
 	private static ArrayList<Graphic_Cards> gpus;
 	private static ArrayList<Memory> memory;
@@ -91,6 +92,11 @@ public class ComputerPartsApp extends Application {
 		// For every component, load the logo
 		try {
 			Connect db = new Connect();
+			
+			cpu_coolers = db.loadCPU_coolers();
+			for (CPU_Cooling c:cpu_coolers) {
+				loadBrandLogos(c.getBrand());
+			}
 			
 			cpus = db.loadCPUs();
 			for (CPU c:cpus) {
@@ -168,6 +174,9 @@ public class ComputerPartsApp extends Application {
 		return brand_logos.get(brand);
 	}
 	
+	public static ArrayList<CPU_Cooling> getCPU_coolers(){
+		return cpu_coolers;
+	}
 	
 	public static ArrayList<CPU> getCPUs() {
 		return cpus;

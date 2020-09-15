@@ -109,7 +109,7 @@ public class Connect {
 	
 	public Motherboards loadMotherboard(int id) throws SQLException {
 		Motherboards m;
-		String query = "SELECT * FROM CPU JOIN Component ON CPU.IdComponent = Component.IdComponent WHERE CPU.IdComponent = '" + id + "'";
+		String query = "SELECT * FROM Motherboard JOIN Component ON Motherboard.IdComponent = Component.IdComponent WHERE Motherboard.IdComponent = '" + id + "'";
 		ResultSet rs=st.executeQuery(query);
 		if (rs.next()) {
 			String name = rs.getString("Name");
@@ -206,7 +206,7 @@ public class Connect {
 	
 	public Power_supplies loadPowerSupply(int id) throws SQLException {
 		Power_supplies p;
-		String query = "SELECT * FROM Memory JOIN Component ON Memory.IdComponent = Component.IdComponent WHERE Memory.IdComponent = '" + id + "'";
+		String query = "SELECT * FROM Power_supply JOIN Component ON Power_supply.IdComponent = Component.IdComponent WHERE Power_supply.IdComponent = '" + id + "'";
 		ResultSet rs=st.executeQuery(query);
 		if (rs.next()) {
 			String name = rs.getString("Name");
@@ -359,7 +359,7 @@ public class Connect {
 	
 	public Storage loadStorage(int id) throws SQLException {
 		Storage s;
-		String query = "SELECT * FROM Graphics_card JOIN Component ON Graphics_card.IdComponent = Component.IdComponent WHERE Graphics_card.IdComponent = '" + id + "'";
+		String query = "SELECT * FROM Storage JOIN Component ON Storage.IdComponent = Component.IdComponent WHERE Storage.IdComponent = '" + id + "'";
 		ResultSet rs=st.executeQuery(query);
 		if (rs.next()) {
 			String name = rs.getString("Name");
@@ -492,7 +492,8 @@ public class Connect {
 	public Computer createComputer(String name, User u) throws SQLException{
 		String username = u.getUsername();
 		String query = "INSERT INTO Computer(Name, Username) VALUES ('"+name+"', '"+username+"')";
-		st.executeUpdate(query);
+		Statement writeSt = writeConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		writeSt.executeUpdate(query);
 		query = "SELECT IdComputer FROM Computer WHERE Name = '"+name+"' and Username = '"+username+"'";
 		ResultSet rs = st.executeQuery(query);
 		if(rs.next()) {
@@ -502,6 +503,19 @@ public class Connect {
 		} else {
 			throw(new SQLException());
 		}
+	}
+	
+	public boolean setComputerName(int id, String name) {
+		String query = "UPDATE Computer SET Name = '" + name + "' WHERE IdComputer = '" + id + "'";
+		Statement writeSt;
+		try {
+			writeSt = writeConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			writeSt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean insertUser(String username, String password, String salt, String question, String answer) {

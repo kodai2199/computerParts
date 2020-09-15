@@ -70,16 +70,16 @@
                         <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
                      </bottom>
                      <center>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
+                        <HBox alignment="CENTER" minHeight="100.0" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField promptText="Enter the build name" styleClass="std-textfield">
+                              <TextField fx:id="buildName" promptText="Enter the build name" styleClass="std-textfield">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </TextField>
-                              <Button mnemonicParsing="false" styleClass="std-button" text="Save build" />
+                              <Button fx:id="save" mnemonicParsing="false" onAction="#saveName" styleClass="std-button" text="Save name" />
                               <Separator orientation="VERTICAL" prefHeight="200.0" />
-                              <Label alignment="CENTER" text="Grand total: 0,00€" textFill="WHITE" HBox.hgrow="ALWAYS">
+                              <Label fx:id="buildTotal" alignment="CENTER" text="Grand total: 0,00€" textFill="WHITE" HBox.hgrow="ALWAYS">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>

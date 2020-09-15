@@ -6,7 +6,7 @@ public class CPU_Cooling extends Component {
 	private int airflow;
 	private String socket;
 	private int height;
-	protected static final String printable_name = "CPU coolers";
+	protected static final String category_name = "CPU_Cooling";
 
 
 	public CPU_Cooling(int id, String name, double price, String brand, String lighting, String type, int airflow,
@@ -38,4 +38,8 @@ public class CPU_Cooling extends Component {
 	public int getHeight() {
 		return height;
 	}
+	
+	public String getCategory() {
+		 return category_name;
+	}	
 }

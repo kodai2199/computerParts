@@ -5,7 +5,7 @@ public class CPU extends Component {
 	private int cores;
 	private String socket;
 	private int wattage;
-	protected static final String printable_name = "CPUs";
+	protected static final String category_name = "CPU";
 	
 	public CPU (int id, String name, double price, String brand, int frequency, int cores, String socket, int wattage) {
 		super(id, name, price,brand);
@@ -30,4 +30,8 @@ public class CPU extends Component {
 	 public int getWattage() {
 		 return wattage;
 	 }
+	 
+	public String getCategory() {
+		 return category_name;
+	}	
 }

@@ -3,6 +3,7 @@ package main.java.users;
 import main.java.component.*;
 import main.java.db.Connect;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /*
@@ -56,11 +57,11 @@ public class Computer {
 			while(computerComponents.next()) {
 				int idComponent = computerComponents.getInt("IdComponent");
 				switch (computerComponents.getString("Category")){
-					case "Case":
+					case "Cases":
 						chassis = db.loadCase(idComponent);
 						computer.add(chassis);
 						break;
-					case "CPU_cooling":
+					case "CPU_Cooling":
 						cpu_cooler = db.loadCPU_cooler(idComponent);
 						computer.add(cpu_cooler);
 						break;
@@ -68,78 +69,193 @@ public class Computer {
 						cpu = db.loadCPU(idComponent);
 						computer.add(cpu);
 						break;
-					case "Graphics_card":
+					case "Graphic_Cards":
 						gpu = db.loadGPU(idComponent);
-						computer.add(gpu);
+						ngpu = computerComponents.getInt("Quantity");
+						for (int i = 0; i < ngpu; i++) {
+							computer.add(gpu);
+						}
 						break;
 					case "Memory":
 						ram = db.loadMemory(idComponent);
-						computer.add(ram);
+						nram = computerComponents.getInt("Quantity");
+						for (int i = 0; i < nram; i++) {
+							computer.add(ram);
+						}
 						break;
-					case "Motherboard":
+					case "Motherboards":
 						motherboard = db.loadMotherboard(idComponent);
 						computer.add(motherboard);
 						break;
-					case "Power_supply":
+					case "Power_supplies":
 						psu = db.loadPowerSupply(idComponent);
 						computer.add(psu);
 						break;
 					case "Storage":
-						computer.add(db.loadStorage(idComponent));
+						int quantity = computerComponents.getInt("Quantity");
+						for(int i = 0; i < quantity; i++) {
+							computer.add(db.loadStorage(idComponent));
+						}
 						break;
 				}
 			}
-			computerComponents.first();
+			computerComponents.beforeFirst();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public boolean addComponent(Component c) {
-		if(checkCompatibility(c)) { 
-			computer.add(c);
+		if(checkCompatibility(c, true)) { 
+			try {
+				// Just increase quantity for gpus and rams
+				if (c.getCategory().equals("Graphic_Cards") && ngpu > 1) {
+					while(computerComponents.next()) {
+						if(computerComponents.getInt("IdComponent") == gpu.getId()) {
+							computerComponents.updateInt("Quantity", ngpu);
+							computerComponents.updateRow();
+							break;
+						}
+					}
+					computerComponents.beforeFirst();
+				} else if (c.getCategory().equals("Memory") && nram > 1){
+					while(computerComponents.next()) {
+						if(computerComponents.getInt("IdComponent") == ram.getId()) {
+							computerComponents.updateInt("Quantity", nram);
+							computerComponents.updateRow();
+							break;
+						}
+					}
+					computerComponents.beforeFirst();
+				} else if(c.getCategory().equals("Storage") && hasComponent(c)){
+					while(computerComponents.next()) {
+						if(computerComponents.getInt("IdComponent") == c.getId()) {
+							int old_quantity = computerComponents.getInt("Quantity");
+							computerComponents.updateInt("Quantity", old_quantity+1);
+							computerComponents.updateRow();
+							break;
+						}
+					}
+					computerComponents.beforeFirst();
+				} else {
+					computerComponents.moveToInsertRow();
+					computerComponents.updateInt("IdComputer", id);
+					computerComponents.updateInt("IdComponent", c.getId());
+					computerComponents.updateInt("Quantity", 1);
+					computerComponents.updateString("Category", c.getCategory());
+					computerComponents.insertRow();
+					computerComponents.beforeFirst();
+				}
+				computer.add(c);
+			} catch (SQLException e) {
+				// ERROR while inserting component
+				e.printStackTrace();
+			}
 			return true;
 		}
 		else 
 			return false;
 	}
 	
-	public boolean removeComponent(Component c) {
-		boolean b=computer.remove(c);
-		return b;
+	public void removeComponent(int id) {
+		String category = getComponentById(id).getCategory();
+		for (int i = 0; i < computer.size(); i++) {
+			if (computer.get(i).getId() == id) {
+				computer.remove(i);
+			}
+		}
+		switch (category) {
+			case "Cases":
+				chassis = null;
+				break;
+			case "CPU_Cooling":
+				cpu_cooler = null;
+				break;
+			case "CPU":
+				cpu = null;
+				break;
+			case "Graphic_Cards":
+				gpu = null;
+				break;
+			case "Memory":
+				ram = null;
+				break;
+			case "Motherboards":
+				motherboard = null;
+				break;
+			case "Power_supplies":
+				psu = null;
+				break;
+		}
+		try {
+			while (computerComponents.next()) {
+				if(computerComponents.getInt("IdComponent") == id) {
+					computerComponents.deleteRow();
+				}			
+			}
+			computerComponents.beforeFirst();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	private boolean checkCompatibility(Component c) {
-		if (computer.size() == 0)														//If there isn't any component, return true 
-			return true;
-		Class<? extends Component> tmp = c.getClass();
-		if(tmp.getSimpleName().equalsIgnoreCase("Motherboards")) {					//Check if the component is a motherboard
+	public void removeComponent(Component c) {
+		removeComponent(c.getId());
+	}
+	
+	public void removeAllComponentsOfCategory(String category) {
+		ArrayList<Component> toRemove = new ArrayList<Component>();
+		for (Component c:computer) {
+			if (c.getCategory() == category) {
+				toRemove.add(c);
+			}
+		}
+		for (Component c:toRemove) {
+			removeComponent(c);
+		}
+	}
+	
+	/*
+	 * Checks the compatibility of a given Component c
+	 * with the rest of the build. If updateVariables is set to true
+	 * and the component is compatible, the relevant variable will
+	 * be updated.
+	 * */
+	private boolean checkCompatibility(Component c, boolean updateVariables) {
+		String category = c.getCategory();
+		if(category.equalsIgnoreCase("Motherboards")) {					//Check if the component is a motherboard
 			if(motherboard != null) 
 				return false;
 			else {
-				motherboard = (Motherboards)c;
-				if(checkMotherboards(motherboard)) 
+				Motherboards tmp = (Motherboards)c;
+				if(checkMotherboards(tmp)) {
+					if (updateVariables) {
+						motherboard = tmp;
+					}
 					return true;
+				}
 				else {
-					motherboard = null;
 					return false;
 				}
 			}
 		}																		
-		else if(tmp.getSimpleName().equalsIgnoreCase("CPU")) {						//Check if the component is a CPU
+		else if(category.equalsIgnoreCase("CPU")) {						//Check if the component is a CPU
 			if(cpu != null)
 				return false;
 			else {
-				cpu=(CPU)c;
-				if(checkCPU(cpu))
+				CPU tmp = (CPU)c;
+				if(checkCPU(tmp)) {
+					if (updateVariables) {
+						cpu = tmp;
+					}
 					return true;
+				}
 				else {
-					cpu = null;
 					return false;
 				}
 			}
 		}
-		else if(tmp.getSimpleName().equalsIgnoreCase("Memory")) {					//Check if the component is a RAM
+		else if(category.equalsIgnoreCase("Memory")) {					//Check if the component is a RAM
 			// Different RAMs are not considered compatible
 			if (nram > 0) {
 				if(!ram.equals(c))
@@ -147,43 +263,53 @@ public class Computer {
 			}
 			if(nram == 8) 
 				return false;
-			else 
-				nram+=1;
-			ram = (Memory)c;
-			if(checkMemory(ram)) 
-				return true;
 			else {
-				nram-=1;
-				return false;
+				Memory tmp = (Memory)c;
+				if(checkMemory(tmp)) {
+					if (updateVariables) {
+						ram = tmp;
+						nram++;
+					}
+					return true;
+				}
+				else {
+					return false;
+				}
 			}
 		}
-		else if(tmp.getSimpleName().equalsIgnoreCase("CPU_Cooling")) {				//Check if the component is a cooler
+		else if(category.equalsIgnoreCase("CPU_Cooling")) {				//Check if the component is a cooler
 			if(cpu_cooler != null)
 				return false;
 			else {
-				cpu_cooler = (CPU_Cooling)c;
-				if(checkCooler(cpu_cooler))
+				CPU_Cooling tmp = (CPU_Cooling)c;
+				if(checkCooler(tmp)) {
+					if (updateVariables) {
+						cpu_cooler = tmp;
+					}
 					return true;
+				}
 				else {
-					cpu_cooler = null;
 					return false;
 				}
 			}
 		}
-		else if(tmp.getSimpleName().equalsIgnoreCase("Cases")) {					//Check if the component is a case
+		else if(category.equalsIgnoreCase("Cases")) {					//Check if the component is a case
 			if(chassis != null)
 				return false;
 			else {
-				chassis = (Cases)c;
-				if(checkCases(chassis))
+				Cases tmp = (Cases)c;
+				if(checkCases(tmp)) {
+					if (updateVariables) {
+						chassis = tmp;
+					}
 					return true;
+				}
 				else {
-					chassis = null;
 					return false;
 				}
 			}
 		}
-		else if(tmp.getSimpleName().equalsIgnoreCase("Graphic_Cards")) {			//Check if the component is a GPU
+		else if(category.equalsIgnoreCase("Graphic_Cards")) {			//Check if the component is a GPU
 			// Different GPUs are not considered compatible
 			if (ngpu > 0) {
 				if(!gpu.equals(c))
@@ -191,30 +317,37 @@ public class Computer {
 			}
 			if(ngpu==2)
 				return false;
-			else 
-				ngpu += 1;
-			gpu = (Graphic_Cards)c;
-			if(checkGPU(gpu)) 
-				return true;
 			else {
-				ngpu -= 1;
-				return false;
-			}
-		}
-		else if(tmp.getSimpleName().equalsIgnoreCase("Power_supplies")) {			//Check if the component is a PSU
-			if(psu != null)
-				return false;
-			else {
-				psu = (Power_supplies)c;
-				if(checkPSU(psu))
+				Graphic_Cards tmp = (Graphic_Cards)c;
+				if(checkGPU(gpu)) {
+					if (updateVariables) {
+						gpu = tmp;
+						ngpu++;
+					}
 					return true;
+				}
 				else {
-					psu = null;
 					return false;
 				}
 			}
 		}
-		else if(tmp.getSimpleName().equalsIgnoreCase("Storage")) {					//Check if the component is a storage
+		else if(category.equalsIgnoreCase("Power_supplies")) {			//Check if the component is a PSU
+			if(psu != null)
+				return false;
+			else {
+				Power_supplies tmp = (Power_supplies)c;
+				if(checkPSU(tmp)) {
+					if (updateVariables) {
+						psu = tmp;
+					}
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		else if(category.equalsIgnoreCase("Storage")) {					//Check if the component is a storage
 			Storage st=(Storage)c;
 			if(checkStorage(st))
 				return true;
@@ -222,6 +355,15 @@ public class Computer {
 				return false;
 		}
 		return true;
+	}
+	
+	/*
+	 * Public wrapper for the checkcompatiblity method.
+	 * Allows to check the compatibility without updating
+	 * the variables.
+	 * */
+	public boolean checkCompatibility(Component c) {
+		return checkCompatibility(c, false);
 	}
 	
 	private boolean checkMotherboards(Motherboards m) {								//Check the motherboard compatibility with the others component. Return true if the motherboard can be added, else return false.
@@ -384,27 +526,22 @@ public class Computer {
 		return true;
 	}
 
-	private boolean checkGPU(Graphic_Cards gpu) {									//Check the GPU compatibility with the others component. Return true if the GPU can be added, else return false.
-		for(Component t:computer) {
-			Class<? extends Component> tmp = t.getClass();
-			if(tmp.getSimpleName().equalsIgnoreCase("Cases")) {
-				Cases cs=(Cases)t;
-				if(cs.getMax_gpu_length()<gpu.getLength())
+	private boolean checkGPU(Graphic_Cards newGPU) {		
+		//Check the GPU compatibility with the others component. Return true if the GPU can be added, else return false.
+		if (chassis != null && chassis.getMax_gpu_length() < newGPU.getLength())
+				return false;
+		if(gpu != null) {
+				System.out.println(gpu.getMulti_GPU());
+				System.out.println(newGPU.getMulti_GPU());
+				if(!gpu.getMulti_GPU().contains(newGPU.getMulti_GPU()))
 					return false;
-			}
-			else if(tmp.getSimpleName().equalsIgnoreCase("Graphic_Cards")) {
-				Graphic_Cards gc=(Graphic_Cards)t;
-				if(!gpu.getMulti_GPU().contains(gc.getMulti_GPU())) 
+				if(gpu.getId() != newGPU.getId())
 					return false;
-				if(!gpu.getType().equalsIgnoreCase(gc.getType()))
+		}
+		if(motherboard != null) {
+			if(ngpu == 1) {
+				if(!motherboard.getMulti_GPU().contains(gpu.getMulti_GPU()))
 					return false;
-			}
-			else if(tmp.getSimpleName().equalsIgnoreCase("Motherboards")) {
-				Motherboards m=(Motherboards)t;
-				if(ngpu==2) {
-					if(!m.getMulti_GPU().equalsIgnoreCase(gpu.getMulti_GPU())) 
-						return false;
-				}
 			}
 		}
 		return true;
@@ -437,6 +574,37 @@ public class Computer {
 			}
 		}
 		return true;
+	}
+	
+	
+	public Component getComponentById(int id) {
+		for (Component c:computer) {
+			if (c.getId() == id)
+				return c;
+		}
+		return null;
+	}
+	
+	
+	public boolean hasComponent(int id) {
+		for (Component c:computer) {
+			if (c.getId() == id)
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean hasComponent(Component c) {
+		return hasComponent(c.getId());
+	}
+	
+	public ArrayList<Component> getComponentsByCategory(String category) {
+		ArrayList<Component> list = new ArrayList<Component>(); 
+		for (Component c:computer) {
+			if (c.getCategory().equals(category))
+				list.add(c);
+		}
+		return list;
 	}
 	
 	private int getM_2() {															//Get the number of the M.2 storage.
@@ -533,8 +701,15 @@ public class Computer {
  		return psu;
  	}
  	
-	public void rename(String name) {												//Change the computer's name.
+	public void rename(String name) {
 		this.name=name;
+		Connect db;
+		try {
+			db = new Connect();
+			db.setComputerName(id, name);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public double getTotalPrice() {													//Get the total price.
@@ -544,4 +719,5 @@ public class Computer {
 		}
 		return tot;
 	}
+
 }

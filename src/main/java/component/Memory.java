@@ -5,7 +5,7 @@ public class Memory extends Component {
 	private String ram_type;
 	private int frequency;
 	private String lighting;
-	protected static final String printable_name = "Memory";
+	protected static final String category_name = "Memory";
 	
 	public Memory(int id, String name, double price, String brand, String ram_type, int frequency,String lighting, int size) {
 		super(id, name, price, brand);
@@ -30,4 +30,8 @@ public class Memory extends Component {
 	public int getSize() {
 		return size;
 	}
+	
+	public String getCategory() {
+		 return category_name;
+	}	
 }

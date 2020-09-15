@@ -1,11 +1,13 @@
 package main.java.controller;
 
+import java.sql.SQLException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import main.java.app.ComputerPartsApp;
 import main.java.app.FxmlData;
 import main.java.app.SceneName;
+import main.java.users.User;
 
 /*
  * This Controller class will take care of the standard menu bar
@@ -50,10 +52,33 @@ public class StdMenuBarController extends GenericController {
         stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDLIST).getScene());
 	}
 	
+	/*
+	 * This method runs only after a click on the new build button.
+	 * Create a new build with a generated name
+	 * */
 	public void openBuildPage() {
-		FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE);
-        fxml.setLastSceneName(sceneName);
-        stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE).getScene());
+		// Find the number of this user's builds 
+		User u = ComputerPartsApp.getUser();
+		int id = 0;
+		int buildsNumber = u.getComputers().size();
+        String newName = u.getUsername()+"#"+buildsNumber;
+        
+        // Create a new computer with the generated name
+		try {
+			id = u.createComputer(newName);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+   
+        
+        // Finally set the options
+		if (id > 0) {
+			FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE);
+			fxml.resetOptions();
+			fxml.setOption("IdComputer", ""+id);
+			fxml.setLastSceneName(sceneName);
+			stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE).getScene());
+		}
 	}
 	
 	public void openHome() {

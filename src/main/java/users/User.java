@@ -123,21 +123,16 @@ public class User {
 		}
 	}
 	
-	// Try to create a new build;
-	public void createComputer(String name) throws IOException {														
-		if(!hasComputer(name)) {
-			Connect db;
-			try {
-				db = new Connect();
-				computers.add(db.createComputer(name, this));
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}	
-		else
-			throw (new IOException());
+	/* Try to create a new computer. If successful
+	 * then return the new build id.
+	 */
+	
+	public int createComputer(String name) throws SQLException, ClassNotFoundException {														
+		Connect db = new Connect();
+		Computer c = db.createComputer(name, this);
+		int id = c.getId();
+		computers.add(c);
+		return id;
 	}
 	
 	public void deleteComputer(int id) {
@@ -155,27 +150,16 @@ public class User {
 		}
 	}
 	
-	// Check if the computer exists by the name and return the computer himself. If the computer doesn't exist, throws FileNotFoundException.
-	public Computer getComputer(String cname) throws FileNotFoundException {										
-		if(!hasComputer(cname))
+	public Computer getComputer(int id) throws FileNotFoundException{
+		if(!hasComputer(id))
 			throw (new FileNotFoundException());
 		else
 			for(Computer c: computers) {
-				if(c.getName().equals(cname)) {
+				if(c.getId() == id) {
 					return c;
 				}
 			}
 		return null;
-	}
-	
-	//Check method. If the computer exists return true, else return false.
-	public boolean hasComputer(String cname) {																	
-		for(Computer c: computers) {
-			if(c.getName().equals(cname)) {
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	public boolean hasComputer(int id) {																	
@@ -231,4 +215,5 @@ public class User {
 	public boolean isLoggedin() {
 		return this.loggedin;
 	}
+
 }

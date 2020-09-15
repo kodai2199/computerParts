@@ -9,7 +9,6 @@ public abstract class Component {
 	private int id;
 	private double price;
 	private String brand;
-	private static final String printable_name = "";
 	public static final Map<String, String> COMPONENT_LIST;
 	
 	static {
@@ -32,12 +31,14 @@ public abstract class Component {
 		this.price=price;
 		this.brand=brand;
 	}
+	
 	public String getName() {
 		return name;
 	}
-	 public double getPrice() {
-		 return price;
-	 }
+	
+	public double getPrice() {
+		return price;
+	}
 	 
 	 public String getBrand() {
 		 return brand;
@@ -51,7 +52,5 @@ public abstract class Component {
 		 return c.id == id;
 	 }
 	 
-	 public static String getPrintableName() {
-		 return printable_name;
-	 }	
+	 abstract public String getCategory();
 }

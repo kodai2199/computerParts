@@ -5,7 +5,7 @@ public class Storage extends Component {
 	private double format;
 	private int size;
 	private int transfer_speed;
-	protected static final String printable_name = "Storage";
+	protected static final String category_name = "Storage";
 
 	public Storage(int id, String name, double price, String brand, String type, double format, int size, int transfer_speed) {
 		super(id, name, price, brand);
@@ -31,4 +31,7 @@ public class Storage extends Component {
 		return this.transfer_speed;
 	}
 
+	public String getCategory() {
+		 return category_name;
+	}
 }
