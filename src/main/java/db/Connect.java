@@ -278,6 +278,7 @@ public class Connect {
 	public ArrayList<Cases> loadCases() throws SQLException {
 		ArrayList<Cases> list=new ArrayList<Cases>();
 		Statement statement1=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		Statement statement2=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		String query="SELECT * FROM Case";
 		ResultSet rs=st.executeQuery(query);
 		while (rs.next()) {
@@ -287,15 +288,20 @@ public class Connect {
 			int maxpsuL=rs.getInt(4);
 			int maxgpuL=rs.getInt(5);
 			int maxcpuFanHeight=rs.getInt(6);
-			HashSet<String> h=new HashSet<String>();
+			HashSet<String> ff=new HashSet<String>();
 			int i=rs.getInt(1);
+			String query3="SELECT * FROM Case_supports_ff WHERE IdComponent = '" + i + "'";
+			ResultSet rs3=statement2.executeQuery(query3);
+			while (rs3.next()) {
+				ff.add(rs3.getString("FormFactor"));
+			}
 			String query1="SELECT * FROM Component WHERE IdComponent = '"+i+"'";
 			ResultSet rs1=statement1.executeQuery(query1);
 			rs1.next();
 			String name=rs1.getString(2);
 			BigDecimal n=rs1.getBigDecimal(3);
 			String brand=rs1.getString(4);
-			cs=new Cases(i, name, n.doubleValue(), brand,size, h, psuSize,maxpsuL,maxgpuL, maxcpuFanHeight);
+			cs=new Cases(i, name, n.doubleValue(), brand,size, ff, psuSize,maxpsuL,maxgpuL, maxcpuFanHeight);
 			list.add(cs);
 		}
 		statement1.close();
