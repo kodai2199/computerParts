@@ -223,7 +223,5 @@ public class BuildPageController extends StdMenuBarController {
 		fxml.setOption("IdComputer", ""+c.getId());
 		fxml.setLastSceneName(sceneName);
 		stage.setScene(ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST).getScene());
-		stage.setMaximized(false);
-	    stage.setMaximized(true);
 	}
 }

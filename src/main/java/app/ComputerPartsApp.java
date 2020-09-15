@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import main.java.component.*;
 import main.java.controller.CategoryListController;
@@ -65,6 +67,13 @@ public class ComputerPartsApp extends Application {
 	public void start(Stage stage) {
 		loadComponentsLists();
 
+	    Screen screen = Screen.getPrimary();
+	    Rectangle2D bounds = screen.getVisualBounds();
+	    stage.setX(0);
+	    stage.setY(0);
+	    stage.setWidth(bounds.getWidth() / 2);
+	    stage.setHeight(bounds.getHeight() / 2);
+		
 		scenes.put(SceneName.LOGIN, new FxmlData(LOGIN_FXML, SceneName.LOGIN, stage));
 		scenes.put(SceneName.HOME, new FxmlData(HOME_FXML, SceneName.HOME, stage));
 		scenes.put(SceneName.SIGNUP, new FxmlData(SIGNUP_FXML, SceneName.SIGNUP, stage));

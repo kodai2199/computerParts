@@ -70,8 +70,6 @@ public class HomeController extends StdMenuBarController {
         fxml.setOption("Category", category);
         fxml.setLastSceneName(sceneName);
         stage.setScene(ComputerPartsApp.getScenes().get(SceneName.CATEGORYLIST).getScene());
-        stage.setMaximized(false);
-        stage.setMaximized(true);
 	}
 	
 }

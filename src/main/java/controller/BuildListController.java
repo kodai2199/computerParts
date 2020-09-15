@@ -88,8 +88,6 @@ public class BuildListController extends StdMenuBarController {
 	private void deleteBuild(int id) {
 		ComputerPartsApp.getUser().deleteComputer(id);
 		stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDLIST).getScene());
-		stage.setMaximized(false);
-	    stage.setMaximized(true);
 	}
 
 	
@@ -98,7 +96,5 @@ public class BuildListController extends StdMenuBarController {
         fxml.setOption("IdComputer", ""+id);
         fxml.setLastSceneName(sceneName);
         stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE).getScene());
-        stage.setMaximized(false);
-        stage.setMaximized(true);
 	}
 }

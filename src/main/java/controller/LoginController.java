@@ -38,7 +38,6 @@ public class LoginController extends GenericController {
 			String pwd = this.login_pwd.getText();
 			ComputerPartsApp.setUser(new User(user, pwd));
 			stage.setScene(ComputerPartsApp.getScenes().get(SceneName.HOME).getScene());
-			stage.setMaximized(true);
 			System.out.println("Login successful");
 		}
 		catch (SecurityException e){

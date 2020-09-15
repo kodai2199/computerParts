@@ -379,8 +379,6 @@ public class CategoryListController extends StdMenuBarController {
 				FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE);
 				fxml.setLastSceneName(sceneName);
 				stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE).getScene());
-				stage.setMaximized(false);
-			    stage.setMaximized(true);
 				event.consume();
 			}
 		};
