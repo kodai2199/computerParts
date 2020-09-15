@@ -44,12 +44,16 @@ public class StdMenuBarController extends GenericController {
 	
 	public void goBack() {
         stage.setScene(ComputerPartsApp.getScenes().get(lastSceneName).getScene());
+        stage.setMaximized(false);
+        stage.setMaximized(true);
 	}
 	
 	public void openBuildList() {
         FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.BUILDLIST);
         fxml.setLastSceneName(sceneName);
         stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDLIST).getScene());
+        stage.setMaximized(false);
+        stage.setMaximized(true);
 	}
 	
 	/*

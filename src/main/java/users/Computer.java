@@ -103,14 +103,6 @@ public class Computer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		fullList();
-	}
-	
-	private void fullList() {
-		System.out.println("FULL LIST");
-		for(Component c:computer) {
-			System.out.println(c.getName());
-		}
 	}
 	
 	public boolean addComponent(Component c) {
@@ -159,7 +151,6 @@ public class Computer {
 				// ERROR while inserting component
 				e.printStackTrace();
 			}
-			fullList();
 			return true;
 		}
 		else 
@@ -223,7 +214,6 @@ public class Computer {
 		System.out.println("TO REMOVE: "+toRemove.size());
 		for (Component c:toRemove) {
 			removeComponent(c);
-			fullList();
 		}
 	}
 	
