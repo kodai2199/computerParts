@@ -103,6 +103,14 @@ public class Computer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		fullList();
+	}
+	
+	private void fullList() {
+		System.out.println("FULL LIST");
+		for(Component c:computer) {
+			System.out.println(c.getName());
+		}
 	}
 	
 	public boolean addComponent(Component c) {
@@ -151,20 +159,24 @@ public class Computer {
 				// ERROR while inserting component
 				e.printStackTrace();
 			}
+			fullList();
 			return true;
 		}
 		else 
 			return false;
 	}
 	
-	public void removeComponent(int id) {
-		String category = getComponentById(id).getCategory();
+	public void removeComponent(Component c) {
+		if (getComponentById(c.getId()) == null) {
+			System.out.println("No such component to be removed");
+			return;
+		}
 		for (int i = 0; i < computer.size(); i++) {
-			if (computer.get(i).getId() == id) {
+			if (computer.get(i).getId() == c.getId()) {
 				computer.remove(i);
 			}
 		}
-		switch (category) {
+		switch (c.getCategory()) {
 			case "Cases":
 				chassis = null;
 				break;
@@ -176,9 +188,11 @@ public class Computer {
 				break;
 			case "Graphic_Cards":
 				gpu = null;
+				ngpu = 0;
 				break;
 			case "Memory":
 				ram = null;
+				nram = 0;
 				break;
 			case "Motherboards":
 				motherboard = null;
@@ -189,7 +203,7 @@ public class Computer {
 		}
 		try {
 			while (computerComponents.next()) {
-				if(computerComponents.getInt("IdComponent") == id) {
+				if(computerComponents.getInt("IdComponent") == c.getId()) {
 					computerComponents.deleteRow();
 				}			
 			}
@@ -199,10 +213,6 @@ public class Computer {
 		}
 	}
 	
-	public void removeComponent(Component c) {
-		removeComponent(c.getId());
-	}
-	
 	public void removeAllComponentsOfCategory(String category) {
 		ArrayList<Component> toRemove = new ArrayList<Component>();
 		for (Component c:computer) {
@@ -210,8 +220,10 @@ public class Computer {
 				toRemove.add(c);
 			}
 		}
+		System.out.println("TO REMOVE: "+toRemove.size());
 		for (Component c:toRemove) {
 			removeComponent(c);
+			fullList();
 		}
 	}
 	
@@ -419,25 +431,14 @@ public class Computer {
 		return true;
 	}
 	
-	private boolean checkCPU(CPU c) {												//Check the CPU compatibility with the others component. Return true if the CPU can be added, else return false.
-		for (Component t:computer) {
-			Class<? extends Component> tmp = t.getClass();
-			if(tmp.getSimpleName().equalsIgnoreCase("Motherboards")) {
-				Motherboards motherboard =(Motherboards)t;
-				if(!c.getSocket().equalsIgnoreCase(motherboard.getSocket()))
-					return false;
-			}
-			if(tmp.getSimpleName().equalsIgnoreCase("CPU_Cooling")) {			
-				CPU_Cooling cool=(CPU_Cooling)t;
-				if(!cool.getSocket().equalsIgnoreCase(c.getSocket()))
-					return false;
-			}
-			if(tmp.getSimpleName().equalsIgnoreCase("Memory")) {
-				Memory ram=(Memory) t;
-				if(c.getFrequency()<ram.getFrequency())
-					return false;
-			}
-		}
+	private boolean checkCPU(CPU newCPU) {											//Check the CPU compatibility with the others component. Return true if the CPU can be added, else return false.
+		if (motherboard != null && !newCPU.getSocket().equalsIgnoreCase(motherboard.getSocket()))
+			return false;
+		if (cpu_cooler != null && !cpu_cooler.getSocket().contains(newCPU.getSocket()))
+			return false;
+		int total_wattage = getWattage()+newCPU.getWattage();
+		if (psu != null && psu.getWattage()<total_wattage)
+			return false;
 		return true;
 	}
 	
@@ -531,8 +532,6 @@ public class Computer {
 		if (chassis != null && chassis.getMax_gpu_length() < newGPU.getLength())
 				return false;
 		if(gpu != null) {
-				System.out.println(gpu.getMulti_GPU());
-				System.out.println(newGPU.getMulti_GPU());
 				if(!gpu.getMulti_GPU().contains(newGPU.getMulti_GPU()))
 					return false;
 				if(gpu.getId() != newGPU.getId())
@@ -544,6 +543,9 @@ public class Computer {
 					return false;
 			}
 		}
+		int total_wattage = getWattage()+newGPU.getWattage();
+		if (psu != null && psu.getWattage()<total_wattage)
+			return false;
 		return true;
 	}
 	

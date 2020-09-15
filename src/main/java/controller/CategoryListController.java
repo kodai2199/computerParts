@@ -253,7 +253,7 @@ public class CategoryListController extends StdMenuBarController {
 			name.getStyleClass().add("item-title");
 			Label socket = new Label(m.getSocket() + " Socket");
 			Label chipset = new Label("Chipset " + m.getChipset());
-			Label ff = new Label(m.getSize() + "Form factor");
+			Label ff = new Label(m.getSize() + " Form factor");
 			Label memory_slots = new Label(m.getRAM_slots() + " Memory slots");
 			Label memory_type = new Label("Supported memory type: " + m.getRAM_type());
 			Label memory_speed = new Label("Maximum memory speed: " + m.getRAM_speed() + "MHz");
@@ -379,6 +379,8 @@ public class CategoryListController extends StdMenuBarController {
 				FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE);
 				fxml.setLastSceneName(sceneName);
 				stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE).getScene());
+				stage.setMaximized(false);
+			    stage.setMaximized(true);
 				event.consume();
 			}
 		};

@@ -78,6 +78,8 @@ public class StdMenuBarController extends GenericController {
 			fxml.setOption("IdComputer", ""+id);
 			fxml.setLastSceneName(sceneName);
 			stage.setScene(ComputerPartsApp.getScenes().get(SceneName.BUILDPAGE).getScene());
+			stage.setMaximized(false);
+		    stage.setMaximized(true);
 		}
 	}
 	
@@ -85,6 +87,8 @@ public class StdMenuBarController extends GenericController {
 		FxmlData fxml = ComputerPartsApp.getScenes().get(SceneName.HOME);
         fxml.setLastSceneName(sceneName);
         stage.setScene(ComputerPartsApp.getScenes().get(SceneName.HOME).getScene());
+        stage.setMaximized(false);
+        stage.setMaximized(true);
 	}
 
 }

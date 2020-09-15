@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" minHeight="800.0" minWidth="1000.0" scaleShape="false" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.HomeController">
+<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" scaleShape="false" styleClass="bg1" stylesheets="@app.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.HomeController">
    <children>
       <HBox fx:id="menu" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="60.0" stylesheets="@app.css">
          <children>
