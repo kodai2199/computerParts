@@ -225,7 +225,7 @@ public class Computer {
 	 * */
 	private boolean checkCompatibility(Component c, boolean updateVariables) {
 		String category = c.getCategory();
-		if(category.equalsIgnoreCase("Motherboards")) {					//Check if the component is a motherboard
+		if(c instanceof Motherboards) {					//Check if the component is a motherboard
 			if(motherboard != null) 
 				return false;
 			else {
@@ -241,7 +241,7 @@ public class Computer {
 				}
 			}
 		}																		
-		else if(category.equalsIgnoreCase("CPU")) {						//Check if the component is a CPU
+		else if(c instanceof CPU) {						//Check if the component is a CPU
 			if(cpu != null)
 				return false;
 			else {
@@ -257,7 +257,7 @@ public class Computer {
 				}
 			}
 		}
-		else if(category.equalsIgnoreCase("Memory")) {					//Check if the component is a RAM
+		else if(c instanceof Memory) {					//Check if the component is a RAM
 			// Different RAMs are not considered compatible
 			if (nram > 0) {
 				if(!ram.equals(c))
@@ -279,7 +279,7 @@ public class Computer {
 				}
 			}
 		}
-		else if(category.equalsIgnoreCase("CPU_Cooling")) {				//Check if the component is a cooler
+		else if(c instanceof CPU_Cooling) {				//Check if the component is a cooler
 			if(cpu_cooler != null)
 				return false;
 			else {
@@ -295,7 +295,7 @@ public class Computer {
 				}
 			}
 		}
-		else if(category.equalsIgnoreCase("Cases")) {					//Check if the component is a case
+		else if(c instanceof Cases) {					//Check if the component is a case
 			if(chassis != null)
 				return false;
 			else {
@@ -311,7 +311,8 @@ public class Computer {
 				}
 			}
 		}
-		else if(category.equalsIgnoreCase("Graphic_Cards")) {			//Check if the component is a GPU
+		else if(c instanceof Graphic_Cards) {
+			//Check if the component is a GPU
 			// Different GPUs are not considered compatible
 			if (ngpu > 0) {
 				if(!gpu.equals(c))
@@ -321,7 +322,7 @@ public class Computer {
 				return false;
 			else {
 				Graphic_Cards tmp = (Graphic_Cards)c;
-				if(checkGPU(gpu)) {
+				if(checkGPU(tmp)) {
 					if (updateVariables) {
 						gpu = tmp;
 						ngpu++;
@@ -333,7 +334,7 @@ public class Computer {
 				}
 			}
 		}
-		else if(category.equalsIgnoreCase("Power_supplies")) {			//Check if the component is a PSU
+		else if(c instanceof Power_supplies) {			//Check if the component is a PSU
 			if(psu != null)
 				return false;
 			else {
@@ -349,7 +350,7 @@ public class Computer {
 				}
 			}
 		}
-		else if(category.equalsIgnoreCase("Storage")) {					//Check if the component is a storage
+		else if(c instanceof Storage) {					//Check if the component is a storage
 			Storage st=(Storage)c;
 			if(checkStorage(st))
 				return true;
