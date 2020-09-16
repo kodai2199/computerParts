@@ -18,7 +18,7 @@ public class StdMenuBarController extends GenericController {
 	
 	@FXML HBox menu;
 	@FXML Button back;
-	@FXML Button profile;
+	@FXML Button logoutButton;
 	@FXML Button savedbuilds;
 	@FXML Button newbuild;
 	
@@ -87,4 +87,8 @@ public class StdMenuBarController extends GenericController {
         stage.setScene(ComputerPartsApp.getScenes().get(SceneName.HOME).getScene());
 	}
 
+	public void logout() {
+		ComputerPartsApp.setUser(null);
+        stage.setScene(ComputerPartsApp.getScenes().get(SceneName.LOGIN).getScene());
+	}
 }

@@ -41,7 +41,7 @@
                   <Tooltip text="Show the list of builds created in the past" />
                </tooltip></Button>
             <Button fx:id="newbuild" mnemonicParsing="false" onAction="#openBuildPage" styleClass="std-button" text="New Build" />
-            <Button fx:id="profile" mnemonicParsing="false" styleClass="std-button" stylesheets="@app.css" text="Your profile" />
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" styleClass="std-button" stylesheets="@app.css" text="Logout" />
          </children>
          <padding>
             <Insets right="50.0" />
