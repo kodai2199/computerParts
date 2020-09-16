@@ -372,10 +372,13 @@ public class Connect {
 			double price = rs.getBigDecimal("Price").doubleValue();
 			String brand = rs.getString("BrandName");
 			String type = rs.getString("Type");
-			double format = rs.getBigDecimal("Format").doubleValue();
+			BigDecimal format = rs.getBigDecimal("Format");
+			if (type.equals("M.2")) {
+				format = new BigDecimal(0);
+			}
 			int size = rs.getInt("Size");
 			int transfer_speed = rs.getInt("TransferSpeed");
-			s = new Storage(id, name, price, brand, type, format, size, transfer_speed);
+			s = new Storage(id, name, price, brand, type, format.doubleValue(), size, transfer_speed);
 		} else { 
 			throw(new SQLException());
 		}

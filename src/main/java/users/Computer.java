@@ -211,7 +211,7 @@ public class Computer {
 				toRemove.add(c);
 			}
 		}
-		System.out.println("TO REMOVE: "+toRemove.size());
+		
 		for (Component c:toRemove) {
 			removeComponent(c);
 		}

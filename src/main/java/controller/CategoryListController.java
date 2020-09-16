@@ -99,7 +99,7 @@ public class CategoryListController extends StdMenuBarController {
 			i.setPickOnBounds(true);
 			Label name = new Label(c.getName());
 			name.getStyleClass().add("item-title");
-			Label size;
+			Label size = new Label(c.getSize());
 			HashSet<String> motherboards = c.getMotherboards();
 			StringBuffer sb = new StringBuffer();
 			int j = 1; 
