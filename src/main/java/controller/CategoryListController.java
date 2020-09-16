@@ -127,11 +127,11 @@ public class CategoryListController extends StdMenuBarController {
 			VBox box;
 			if (build != null && build.checkCompatibility(c)) {
 				addButton = createAddButton(c);
-				box = new VBox(i, name, supported_motherboards, psu_size, max_psu_length, max_gpu_length, max_cpu_fan_height, price, addButton);
+				box = new VBox(i, name, size, supported_motherboards, psu_size, max_psu_length, max_gpu_length, max_cpu_fan_height, price, addButton);
 			} else if (build != null) {
 				continue;
 			} else {
-				box = new VBox(i, name, supported_motherboards, psu_size, max_psu_length, max_gpu_length, max_cpu_fan_height, price);
+				box = new VBox(i, name, size, supported_motherboards, psu_size, max_psu_length, max_gpu_length, max_cpu_fan_height, price);
 			}
 			
 			box.getStyleClass().add("category-box");
