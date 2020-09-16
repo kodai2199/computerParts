@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -48,8 +49,7 @@ public class CategoryListController extends StdMenuBarController {
         category = fxml.getOptions().get("Category");
         switch (category) {
         	case "Cases":
-        		// TODO
-        		//displayGPUs(ComputerPartsApp.getGPUs());
+        		displayCases(ComputerPartsApp.getCases());
         		break;
         	case "CPU coolers":
         		displayCPU_coolers(ComputerPartsApp.getCPU_coolers());
@@ -88,6 +88,56 @@ public class CategoryListController extends StdMenuBarController {
 		VBox box = new VBox(noBuilds);
 		box.getStyleClass().add("category-box");
 		this.categorylist_tilepane.getChildren().add(box);
+	}
+	
+	private void displayCases(ArrayList<Cases> cases) {
+		for (Cases c:cases) {
+			ImageView i = new ImageView(ComputerPartsApp.getLogo(c.getBrand()));
+			i.setPreserveRatio(true);
+			i.setFitHeight(150.0);
+			i.setFitWidth(200.0);
+			i.setPickOnBounds(true);
+			Label name = new Label(c.getName());
+			name.getStyleClass().add("item-title");
+			Label size;
+			HashSet<String> motherboards = c.getMotherboards();
+			StringBuffer sb = new StringBuffer();
+			int j = 1; 
+			for (String s:motherboards) {
+				sb.append(s);
+				if (j < motherboards.size())
+					sb.append(", ");
+				j++;
+			}
+			Label supported_motherboards = new Label("Supported motherboards: "+sb.toString());
+			Label psu_size = new Label("Supported PSU: " + c.getPsu_size());
+			Label max_psu_length = new Label("Max PSU length: "+c.getMax_psu_length()+"mm");
+			Label max_gpu_length = new Label("Max GPU length: "+c.getMax_gpu_length()+"mm");
+			Label max_cpu_fan_height = new Label("Max CPU cooler height: "+c.getMax_cpu_fan_height()+"mm");
+			Label price = new Label(nf.format(c.getPrice())+ "€");
+			
+			/* If a build is set (so addButtons need to be displayed) and this
+			 * component is compatible then show the button.
+			 * Else, if a build is set but this component is not compatible
+			 * continue to the next component.
+			 * 
+			 * If no build is set then just add the item normally without the addButton
+			 */
+			Button addButton;
+			VBox box;
+			if (build != null && build.checkCompatibility(c)) {
+				addButton = createAddButton(c);
+				box = new VBox(i, name, supported_motherboards, psu_size, max_psu_length, max_gpu_length, max_cpu_fan_height, price, addButton);
+			} else if (build != null) {
+				continue;
+			} else {
+				box = new VBox(i, name, supported_motherboards, psu_size, max_psu_length, max_gpu_length, max_cpu_fan_height, price);
+			}
+			
+			box.getStyleClass().add("category-box");
+			this.categorylist_tilepane.getChildren().add(box);
+		}
+		
 	}
 	
 	private void displayCPU_coolers(ArrayList<CPU_Cooling> cpu_coolers) {

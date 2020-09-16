@@ -46,6 +46,8 @@ public class ComputerPartsApp extends Application {
 	 * If in-app reloading will be required, it may be done
 	 * with and additional thread.
 	 * */
+	
+	private static ArrayList<Cases> cases;
 	private static ArrayList<CPU_Cooling> cpu_coolers;
 	private static ArrayList<CPU> cpus;
 	private static ArrayList<Graphic_Cards> gpus;
@@ -102,6 +104,11 @@ public class ComputerPartsApp extends Application {
 		try {
 			Connect db = new Connect();
 			
+			cases = db.loadCases();
+			for (Cases c:cases) {
+				loadBrandLogos(c.getBrand());
+			}
+			
 			cpu_coolers = db.loadCPU_coolers();
 			for (CPU_Cooling c:cpu_coolers) {
 				loadBrandLogos(c.getBrand());
@@ -152,7 +159,7 @@ public class ComputerPartsApp extends Application {
 	private void loadBrandLogos(String brand) {
 		if (brand_logos.containsKey(brand)) {
 			return;
-		} else { 
+		} else {
 			InputStream res = CategoryListController.class.getClassLoader().getResourceAsStream("img/"+brand+".png");
 			Image img = new Image(res);
 			brand_logos.put(brand, img);
@@ -181,6 +188,10 @@ public class ComputerPartsApp extends Application {
 	
 	public static Image getLogo(String brand) {
 		return brand_logos.get(brand);
+	}
+	
+	public static ArrayList<Cases> getCases(){
+		return cases;
 	}
 	
 	public static ArrayList<CPU_Cooling> getCPU_coolers(){

@@ -224,7 +224,6 @@ public class Computer {
 	 * be updated.
 	 * */
 	private boolean checkCompatibility(Component c, boolean updateVariables) {
-		String category = c.getCategory();
 		if(c instanceof Motherboards) {					//Check if the component is a motherboard
 			if(motherboard != null) 
 				return false;
