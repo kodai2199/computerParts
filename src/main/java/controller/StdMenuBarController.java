@@ -30,6 +30,11 @@ public class StdMenuBarController extends GenericController {
 		lastSceneName = fxml.getLastSceneName();
 		sceneName = fxml.getSceneName();
 		
+		if (sceneName == SceneName.BUILDLIST) {
+			back.setText("Return to Home");
+			lastSceneName = SceneName.HOME;
+		}
+		
 		// Only show the back button if a "lastScene" is set
 		if (lastSceneName != null) {
 			back.setVisible(true);
