@@ -158,13 +158,13 @@ public class Computer {
 	}
 	
 	public void removeComponent(Component c) {
-		if (getComponentById(c.getId()) == null) {
-			System.out.println("No such component to be removed");
+		if (!hasComponent(c.getId())) {
+			//System.out.println("No such component to be removed");
 			return;
 		}
-		for (int i = 0; i < computer.size(); i++) {
-			if (computer.get(i).getId() == c.getId()) {
-				computer.remove(i);
+		for (Iterator<Component> i = computer.iterator(); i.hasNext();) {
+			if (i.next().getId() == c.getId()) {
+				i.remove();
 			}
 		}
 		switch (c.getCategory()) {
@@ -437,7 +437,7 @@ public class Computer {
 			Class<? extends Component> tmp = t.getClass();
 			if(tmp.getSimpleName().equalsIgnoreCase("Motherboards")) {
 				Motherboards m=(Motherboards)t;
-				if(m.getRAM_slots()<nram)
+				if(m.getRAM_slots()<=nram)
 					return false;
 				if(m.getRAM_type().equalsIgnoreCase(ram.getRAM_type())) {
 					if (m.getRAM_speed()<ram.getFrequency())
