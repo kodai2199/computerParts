@@ -1,2 +1,2 @@
 # computerParts
-Top Secret
+A university project for a JavaFX application.
